@@ -1,7 +1,7 @@
 {
-  "name": "elysia-compression",
+  "name": "bun-compression",
   "version": "0.0.7",
-  "description": "Compression plugin for Elysia",
+  "description": "Hono Compression plugin for Bun",
   "author": {
     "name": "Gusb3ll",
     "url": "https://github.com/gusb3ll",
@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/gusb3ll/elysia-compression"
+    "url": "https://github.com/sunneydev/bun-compression"
   },
   "exports": {
     "bun": "./dist/index.js",
@@ -19,9 +19,9 @@
     "default": "./dist/cjs/index.js"
   },
   "types": "./src/index.ts",
-  "url": "https://github.com/gusb3ll/elysia-compression",
+  "url": "https://github.com/sunneydev/bun-compression",
   "keywords": [
-    "elysia",
+    "hono",
     "compression"
   ],
   "license": "MIT",
@@ -33,25 +33,21 @@
     "fmt": "prettier --write ."
   },
   "dependencies": {
-    "compressible": "2.0.18"
+    "compressible": "2.0.18",
+    "hono": "^3.12.10"
   },
   "devDependencies": {
-    "@elysiajs/stream": "0.7.2",
     "@types/compressible": "2.0.2",
     "bun-types": "1.0.14",
-    "elysia": "0.7.29",
     "eslint": "8.54.0",
     "prettier": "3.1.0",
     "typescript": "5.3.2"
-  },
-  "peerDependencies": {
-    "elysia": ">= 0.7.15"
   },
   "prettier": {
     "singleQuote": true,
     "printWidth": 80,
     "tabWidth": 2,
     "semi": false,
-    "arrowParens": "avoid"
+    "arrowParens": "always"
   }
 }

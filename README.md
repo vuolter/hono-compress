@@ -1,20 +1,22 @@
-# elysia-compression
+# bun-compression
 
-Compression plugin for [elysia](https://github.com/elysiajs/elysia)
+Compression plugin for [Hono](https://github.com/honojs/hono)
 
 ## Installation
 
 ```bash
-bun add elysia-compression
+bun add bun-compression
 ```
 
 ## Example
 
 ```typescript
-import { Elysia } from 'elysia'
-import { compression } from 'elysia-compression'
+import { Hono } from 'hono'
+import { compress } from 'bun-compression'
 
-const app = new Elysia().use(compression()).listen(8080)
+const app = new Hono()
+
+app.use('*', compress())
 ```
 
 ## Config

@@ -1,9 +1,10 @@
 import compressible from 'compressible'
-import { Elysia, mapResponse } from 'elysia'
+import { Hono, type MiddlewareHandler } from 'hono'
 import { gzipSync, deflateSync, type ZlibCompressionOptions } from 'bun'
 import { CompressionStream } from './stream'
 import { isReadableStream } from './utils'
-// import { brotliCompressSync, BrotliOptions } from 'zlib'
+
+const ENCODING_TYPES = ['gzip', 'deflate']
 
 export type CompressionOptions = {
   /**
@@ -26,7 +27,7 @@ export type CompressionOptions = {
   encoding?: BufferEncoding
 }
 
-const shouldCompress = (res: any) => {
+const shouldCompress = (res: Response) => {
   const type = res.headers.get('Content-Type')
   if (!type) {
     return false
@@ -42,51 +43,52 @@ const toBuffer = (data: unknown, encoding: BufferEncoding) =>
     encoding,
   )
 
-export const compression = (
+export const compress = (
   { type = 'gzip', options = {}, encoding = 'utf-8' }: CompressionOptions = {
     type: 'gzip',
     encoding: 'utf-8',
   },
-) => {
-  const app = new Elysia({
-    name: 'elysia-compression',
-  })
-
+): MiddlewareHandler => {
   if (!['gzip', 'deflate'].includes(type)) {
     throw new Error('Invalid compression type. Use gzip or deflate.')
   }
 
-  return app.onAfterHandle(ctx => {
-    ctx.set.headers['Content-Encoding'] = type
+  return async function compress(c, next) {
+    await next()
+    const accepted = c.req.header('Accept-Encoding')
+    const acceptsEncoding = accepted?.includes(type)
 
-    const res = mapResponse(ctx.response, {
-      status: 200,
-      headers: {},
-    })
-
-    if (!res.headers.get('Content-Type')) {
-      res.headers.set('Content-Type', 'text/plain')
+    if (!acceptsEncoding || !c.res.body) {
+      return
     }
 
-    if (!shouldCompress(res)) {
-      delete ctx.set.headers['Content-Encoding']
-      return ctx.response
-    }
-
-    const stream = (ctx as any).response?.stream
+    const stream = c.res.body
     const compressedBody = isReadableStream(stream)
       ? stream.pipeThrough(new CompressionStream(type))
       : type === 'gzip'
-        ? gzipSync(
-          toBuffer(ctx.response, encoding),
-          options as ZlibCompressionOptions,
-        )
-        : deflateSync(
-          toBuffer(ctx.response, encoding),
-          options as ZlibCompressionOptions,
-        )
-    ctx.response = new Response(compressedBody, {
-      headers: res.headers,
+        ? gzipSync(toBuffer(c.res.body, encoding), options)
+        : deflateSync(toBuffer(c.res.body, encoding), options)
+
+    c.res = new Response(compressedBody, {
+      headers: c.res.headers,
     })
-  })
+    c.res.headers.set('Content-Encoding', type)
+  }
+}
+
+const app = new Hono()
+
+// app.use('*', compress({ type: 'gzip' }))
+
+app.get('/', (c) => {
+  return c.json({ hello: 'world' })
+})
+
+app.get('/text', (c) => {
+  return c.text('Hello, World!')
+})
+
+export default {
+  fetch: app.fetch,
+  port: 3003,
 }
