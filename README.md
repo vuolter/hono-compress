@@ -43,3 +43,7 @@ Refer to the bun zlib options [documentation](https://bun.sh/docs/api/utils#bun-
 @default `utf-8`
 
 The encoding of the response body that is being compressed.
+
+## Acknowledgments
+
+This project is inspired by [elysia-compression](https://github.com/gusb3ll/elysia-compression) by [gusb3ll](https://github.com/gusb3ll). Adaptations have been made to support Hono.
