@@ -1,10 +1,7 @@
-import compressible from 'compressible'
-import { Hono, type MiddlewareHandler } from 'hono'
+import type { MiddlewareHandler } from 'hono'
 import { gzipSync, deflateSync, type ZlibCompressionOptions } from 'bun'
 import { CompressionStream } from './stream'
 import { isReadableStream } from './utils'
-
-const ENCODING_TYPES = ['gzip', 'deflate']
 
 export type CompressionOptions = {
   /**
@@ -25,14 +22,6 @@ export type CompressionOptions = {
    * Encoding for the response body.
    */
   encoding?: BufferEncoding
-}
-
-const shouldCompress = (res: Response) => {
-  const type = res.headers.get('Content-Type')
-  if (!type) {
-    return false
-  }
-  return compressible(type) ?? false
 }
 
 const toBuffer = (data: unknown, encoding: BufferEncoding) =>
@@ -74,21 +63,4 @@ export const compress = (
     })
     c.res.headers.set('Content-Encoding', type)
   }
-}
-
-const app = new Hono()
-
-// app.use('*', compress({ type: 'gzip' }))
-
-app.get('/', (c) => {
-  return c.json({ hello: 'world' })
-})
-
-app.get('/text', (c) => {
-  return c.text('Hello, World!')
-})
-
-export default {
-  fetch: app.fetch,
-  port: 3003,
 }
