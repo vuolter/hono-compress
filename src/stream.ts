@@ -1,4 +1,4 @@
-import zlib from 'node:zlib'
+import zlib from "node:zlib"
 
 /** NOTE: can be removed once Bun has implemented this class
  *
@@ -9,18 +9,18 @@ export class CompressionStream {
   readable: ReadableStream
   writable: WritableStream
 
-  constructor(format: 'gzip' | 'deflate') {
+  constructor(format: "gzip" | "deflate") {
     const handle =
-      format === 'deflate'
+      format === "deflate"
         ? zlib.createDeflate()
-        : format === 'gzip'
+        : format === "gzip"
           ? zlib.createGzip()
           : zlib.createDeflateRaw()
 
     this.readable = new ReadableStream({
       start(controller) {
-        handle.on('data', (chunk: Uint8Array) => controller.enqueue(chunk))
-        handle.once('end', () => controller.close())
+        handle.on("data", (chunk: Uint8Array) => controller.enqueue(chunk))
+        handle.once("end", () => controller.close())
       },
     })
 
