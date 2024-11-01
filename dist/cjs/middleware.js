@@ -3,34 +3,44 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.compress = exports.ACCEPTED_ENCODINGS = void 0;
 const bun_1 = require("bun");
 const stream_1 = require("./stream");
-exports.ACCEPTED_ENCODINGS = ["br", "gzip", "deflate"];
-const compress = ({ type, options = {}, streamOptions = {}, threshold = 1024 } = {
-    type: "gzip",
-}) => {
-    if (!exports.ACCEPTED_ENCODINGS.includes(type)) {
-        throw new Error(`Invalid compression type: ${type}`);
+exports.ACCEPTED_ENCODINGS = ['br', 'gzip', 'deflate'];
+const compress = ({ encoding, encodings = [...exports.ACCEPTED_ENCODINGS], options = {}, streamOptions = {}, threshold = 1024, } = {}) => {
+    if (encoding) {
+        encodings = [encoding];
+    }
+    const unsupportedEncoding = encodings.find((enc) => !exports.ACCEPTED_ENCODINGS.includes(enc));
+    if (unsupportedEncoding) {
+        throw new Error(`Invalid compression encoding: ${unsupportedEncoding}`);
     }
     return async function compress(c, next) {
         await next();
         let compressedBody;
-        const isAcceptedEncoding = c.req.header("Accept-Encoding")?.includes(type);
-        if (!isAcceptedEncoding || !c.res.body) {
+        const body = c.res.body;
+        if (!body) {
             return;
         }
-        const isReadableStream = c.res.body instanceof ReadableStream;
+        const acceptedEncoding = c.req.header('Accept-Encoding');
+        if (!acceptedEncoding) {
+            return;
+        }
+        const encoding = encodings.find((enc) => acceptedEncoding.includes(enc));
+        if (!encoding) {
+            return;
+        }
+        const isReadableStream = body instanceof ReadableStream;
         if (isReadableStream) {
-            compressedBody = c.res.body.pipeThrough(new stream_1.CompressionStream(type, streamOptions));
+            compressedBody = body.pipeThrough(new stream_1.CompressionStream(encoding, streamOptions));
         }
         else {
             const buffer = await c.req.arrayBuffer();
             if (buffer.byteLength < threshold) {
                 return;
             }
-            const compress = type === "gzip" ? bun_1.gzipSync : bun_1.deflateSync;
+            const compress = encoding === 'gzip' ? bun_1.gzipSync : bun_1.deflateSync;
             compressedBody = compress(buffer, options);
         }
         c.res = new Response(compressedBody, { headers: c.res.headers });
-        c.res.headers.set("Content-Encoding", type);
+        c.res.headers.set('Content-Encoding', encoding);
     };
 };
 exports.compress = compress;

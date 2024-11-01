@@ -11,15 +11,15 @@ class CompressionStream {
     constructor(encoding, options) {
         let handle;
         switch (encoding) {
-            case "br": {
+            case 'br': {
                 handle = node_zlib_1.default.createBrotliCompress(options);
                 break;
             }
-            case "gzip": {
+            case 'gzip': {
                 handle = node_zlib_1.default.createGzip(options);
                 break;
             }
-            case "deflate": {
+            case 'deflate': {
                 handle = node_zlib_1.default.createDeflate(options);
                 break;
             }
@@ -29,13 +29,13 @@ class CompressionStream {
         }
         this.readable = new ReadableStream({
             start(controller) {
-                handle.on("data", (chunk) => controller.enqueue(chunk));
-                handle.once("end", controller.close);
+                handle.on('data', (chunk) => controller.enqueue(chunk));
+                handle.once('end', () => controller.close());
             },
         });
         this.writable = new WritableStream({
             write: (chunk) => handle.write(chunk),
-            close: handle.end,
+            close: () => handle.end(),
         });
     }
 }
