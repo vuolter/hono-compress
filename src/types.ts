@@ -22,21 +22,21 @@ export interface CompressOptions {
   encodings?: CompressionEncoding[]
 
   /**
-   * Options for the compression algorithm.
+   * Options passed to the compression engine to compress fixed-length content.
    *
    * @param {Object}
    */
   options?: CompressionOptions
 
   /**
-   * Options for the stream compression algorithm.
+   * Options passed to the compression engine to compress streaming content.
    *
    * @param {Object}
    */
   streamOptions?: CompressionStreamOptions
 
   /**
-   * The minimum byte size for a response to be compressed.
+   * The minimum size in bytes for a response content to be compressed.
    *
    * @default 1024
    */
