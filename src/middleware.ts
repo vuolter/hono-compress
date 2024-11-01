@@ -11,13 +11,24 @@ import type { CompressOptions } from "./types"
 
 export const ACCEPTED_ENCODINGS = ["br", "gzip", "deflate"] as const
 
-export const compress = (
-  { type, options = {}, streamOptions = {}, threshold = 1024 }: CompressOptions = {
-    type: "gzip",
-  },
-): MiddlewareHandler => {
-  if (!ACCEPTED_ENCODINGS.includes(type)) {
-    throw new Error(`Invalid compression type: ${type}`)
+export const compress = ({
+  encoding,
+  encodings = [...ACCEPTED_ENCODINGS],
+  options = {},
+  streamOptions = {},
+  threshold = 1024,
+}: CompressOptions = {}): MiddlewareHandler => {
+  // NOTE: If defined, uses `encoding` as the only compression scheme as does `hono/compress`
+  if (encoding) {
+    encodings = [encoding]
+  }
+
+  const unsupportedEncoding: string | undefined = encodings.find(
+    (enc) => !ACCEPTED_ENCODINGS.includes(enc),
+  )
+
+  if (unsupportedEncoding) {
+    throw new Error(`Invalid compression encoding: ${unsupportedEncoding}`)
   }
 
   return async function compress(c, next) {
@@ -25,29 +36,39 @@ export const compress = (
 
     let compressedBody
 
-    const isAcceptedEncoding = c.req.header("Accept-Encoding")?.includes(type)
+    const body = c.res.body
 
-    if (!isAcceptedEncoding || !c.res.body) {
+    if (!body) {
       return
     }
 
-    const isReadableStream = c.res.body instanceof ReadableStream
+    const acceptedEncoding = c.req.header("Accept-Encoding")
+
+    if (!acceptedEncoding) {
+      return
+    }
+
+    const encoding = encodings.find((enc) => acceptedEncoding.includes(enc))
+
+    if (!encoding) {
+      return
+    }
+
+    const isReadableStream = body instanceof ReadableStream
 
     if (isReadableStream) {
-      compressedBody = c.res.body.pipeThrough(
-        new CompressionStream(type, streamOptions),
-      )
+      compressedBody = body.pipeThrough(new CompressionStream(encoding, streamOptions))
     } else {
       const buffer = await c.req.arrayBuffer()
 
       if (buffer.byteLength < threshold) {
         return
       }
-      const compress = type === "gzip" ? gzipSync : deflateSync
+      const compress = encoding === "gzip" ? gzipSync : deflateSync
       compressedBody = compress(buffer, options)
     }
 
     c.res = new Response(compressedBody, { headers: c.res.headers })
-    c.res.headers.set("Content-Encoding", type)
+    c.res.headers.set("Content-Encoding", encoding)
   }
 }

@@ -8,11 +8,18 @@ export type CompressionStreamOptions = BrotliOptions | ZlibOptions
 
 export interface CompressOptions {
   /**
-   * Algorithm to use for compression.
+   * Algorithm to use to compress the response content.
    *
-   * @default `gzip`
+   * @default `undefined`
    */
-  type: CompressionEncoding
+  encoding?: CompressionEncoding
+
+  /**
+   * List of algorithms allowed to be used to compress the response content.
+   *
+   * @default {ACCEPTED_ENCODINGS}
+   */
+  encodings?: CompressionEncoding[]
 
   /**
    * Options for the compression algorithm.
