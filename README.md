@@ -5,14 +5,14 @@ Compression plugin for [Hono](https://github.com/honojs/hono)
 ## Installation
 
 ```bash
-bun add bun-compression
+bun add github:hono-compress
 ```
 
 ## Example
 
 ```typescript
 import { Hono } from 'hono'
-import { compress } from 'bun-compression'
+import { compress } from 'hono-compress'
 
 const app = new Hono()
 
