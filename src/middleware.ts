@@ -4,12 +4,12 @@
  * https://github.com/oven-sh/bun/issues/1723#issuecomment-1774174194
  * */
 
-import type { MiddlewareHandler } from "hono"
-import { gzipSync, deflateSync } from "bun"
-import { CompressionStream } from "./stream"
-import type { CompressOptions } from "./types"
+import type { MiddlewareHandler } from 'hono'
+import { gzipSync, deflateSync } from 'bun'
+import { CompressionStream } from './stream'
+import type { CompressOptions } from './types'
 
-export const ACCEPTED_ENCODINGS = ["br", "gzip", "deflate"] as const
+export const ACCEPTED_ENCODINGS = ['br', 'gzip', 'deflate'] as const
 
 export const compress = ({
   encoding,
@@ -42,7 +42,7 @@ export const compress = ({
       return
     }
 
-    const acceptedEncoding = c.req.header("Accept-Encoding")
+    const acceptedEncoding = c.req.header('Accept-Encoding')
 
     if (!acceptedEncoding) {
       return
@@ -64,11 +64,11 @@ export const compress = ({
       if (buffer.byteLength < threshold) {
         return
       }
-      const compress = encoding === "gzip" ? gzipSync : deflateSync
+      const compress = encoding === 'gzip' ? gzipSync : deflateSync
       compressedBody = compress(buffer, options)
     }
 
     c.res = new Response(compressedBody, { headers: c.res.headers })
-    c.res.headers.set("Content-Encoding", encoding)
+    c.res.headers.set('Content-Encoding', encoding)
   }
 }

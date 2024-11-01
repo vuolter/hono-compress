@@ -1,6 +1,6 @@
-import zlib from "node:zlib"
+import zlib from 'node:zlib'
 
-import type { CompressionEncoding, CompressionStreamOptions } from "./types"
+import type { CompressionEncoding, CompressionStreamOptions } from './types'
 
 export class CompressionStream {
   readable: ReadableStream
@@ -10,15 +10,15 @@ export class CompressionStream {
     let handle
 
     switch (encoding) {
-      case "br": {
+      case 'br': {
         handle = zlib.createBrotliCompress(options)
         break
       }
-      case "gzip": {
+      case 'gzip': {
         handle = zlib.createGzip(options)
         break
       }
-      case "deflate": {
+      case 'deflate': {
         handle = zlib.createDeflate(options)
         break
       }
@@ -29,8 +29,8 @@ export class CompressionStream {
 
     this.readable = new ReadableStream({
       start(controller) {
-        handle.on("data", (chunk: Uint8Array) => controller.enqueue(chunk))
-        handle.once("end", () => controller.close())
+        handle.on('data', (chunk: Uint8Array) => controller.enqueue(chunk))
+        handle.once('end', () => controller.close())
       },
     })
 

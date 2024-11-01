@@ -13,12 +13,12 @@ bun add github:vuolter/hono-compress
 ## Example
 
 ```typescript
-import { Hono } from "hono"
-import { compress } from "hono-compress"
+import { Hono } from 'hono'
+import { compress } from 'hono-compress'
 
 const app = new Hono()
 
-app.use("*", compress())
+app.use('*', compress())
 ```
 
 ## Configuration
