@@ -2,7 +2,7 @@
 
 Compression plugin for [Hono](https://github.com/honojs/hono)
 
-Drop-in replacement of the official `hono-compress` middleware, but with `brotli` compression and response size threshold.
+Drop-in replacement of the official [Compress Middleware](https://hono.dev/docs/middleware/builtin/compress), but with `brotli` compression, response size threshold and [Bun](https://bun.sh/) support.
 
 ## Installation
 
@@ -10,15 +10,15 @@ Drop-in replacement of the official `hono-compress` middleware, but with `brotli
 bun add github:vuolter/hono-compress
 ```
 
-## Example
+## Usage
 
 ```typescript
-import { Hono } from 'hono'
-import { compress } from 'hono-compress'
+import { Hono } from "hono"
+import { compress } from "hono-compress"
 
 const app = new Hono()
 
-app.use('*', compress())
+app.use(compress())
 ```
 
 ## Configuration
@@ -48,13 +48,15 @@ Defaults to `{}`.
 
 Options passed to the compression engine to compress fixed-length content.
 
-Refer to the bun zlib options [documentation](https://bun.sh/docs/api/utils#bun-gzipsync) for more details.
+Refer to the bun Zlib [documentation](https://bun.sh/docs/api/utils#bun-gzipsync) for more details.
 
 ### streamOptions
 
 Defaults to `{}`.
 
 Options passed to the compression engine to compress streaming content.
+
+Refer to the node Zlib [documentation](https://nodejs.org/api/zlib.html) for more details.
 
 ### threshold
 
