@@ -1,32 +1,42 @@
 import zlib from "node:zlib"
 
-/** NOTE: can be removed once Bun has implemented this class
- *
- * https://github.com/oven-sh/bun/issues/1723
- * https://github.com/oven-sh/bun/issues/1723#issuecomment-1774174194
- * */
+import type { CompressionEncoding, CompressionStreamOptions } from "./types"
+
 export class CompressionStream {
   readable: ReadableStream
   writable: WritableStream
 
-  constructor(format: "gzip" | "deflate") {
-    const handle =
-      format === "deflate"
-        ? zlib.createDeflate()
-        : format === "gzip"
-          ? zlib.createGzip()
-          : zlib.createDeflateRaw()
+  constructor(encoding: CompressionEncoding, options?: CompressionStreamOptions) {
+    let handle
+
+    switch (encoding) {
+      case "br": {
+        handle = zlib.createBrotliCompress(options)
+        break
+      }
+      case "gzip": {
+        handle = zlib.createGzip(options)
+        break
+      }
+      case "deflate": {
+        handle = zlib.createDeflate(options)
+        break
+      }
+      default: {
+        handle = zlib.createDeflateRaw(options) as never
+      }
+    }
 
     this.readable = new ReadableStream({
       start(controller) {
         handle.on("data", (chunk: Uint8Array) => controller.enqueue(chunk))
-        handle.once("end", () => controller.close())
+        handle.once("end", controller.close)
       },
     })
 
     this.writable = new WritableStream({
       write: (chunk: Uint8Array) => handle.write(chunk) as any,
-      close: () => handle.end() as any,
+      close: handle.end as any,
     })
   }
 }
