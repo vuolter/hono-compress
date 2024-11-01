@@ -30,13 +30,13 @@ export class CompressionStream {
     this.readable = new ReadableStream({
       start(controller) {
         handle.on("data", (chunk: Uint8Array) => controller.enqueue(chunk))
-        handle.once("end", controller.close)
+        handle.once("end", () => controller.close())
       },
     })
 
     this.writable = new WritableStream({
       write: (chunk: Uint8Array) => handle.write(chunk) as any,
-      close: handle.end as any,
+      close: () => handle.end() as any,
     })
   }
 }
