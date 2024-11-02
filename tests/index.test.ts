@@ -1,14 +1,11 @@
 import { describe, it, expect } from 'bun:test'
 
+import type { CompressionEncoding } from '../src/types'
 import { compress } from '../src'
-import { Context, Hono } from 'hono'
+import { Hono, type Context } from 'hono'
 
-const req = (encoding: 'gzip' | 'deflate' = 'gzip') =>
-  new Request('http://localhost/', {
-    headers: {
-      ...(encoding && { 'Accept-Encoding': encoding }),
-    },
-  })
+const req = (encoding: CompressionEncoding) =>
+  new Request('http://localhost/', { headers: { 'Accept-Encoding': encoding } })
 
 const text = `
 もしも願いが一つ叶うなら
@@ -19,8 +16,24 @@ const text = `
 const handler = (c: Context) => c.text(text, 200, { 'Content-Type': 'text/plain' })
 
 describe('Compression', () => {
+  it('handle zstd compression', async () => {
+    const app = new Hono().use(compress()).get('/', handler)
+
+    const res = await app.request(req('zstd'))
+
+    expect(res.headers.get('Content-Encoding')).toBe('zstd')
+  })
+
+  it('handle brotli compression', async () => {
+    const app = new Hono().use(compress()).get('/', handler)
+
+    const res = await app.request(req('br'))
+
+    expect(res.headers.get('Content-Encoding')).toBe('br')
+  })
+
   it('handle gzip compression', async () => {
-    const app = new Hono().use('*', compress({ type: 'gzip' })).get('/', handler)
+    const app = new Hono().use(compress()).get('/', handler)
 
     const res = await app.request(req('gzip'))
 
@@ -28,7 +41,7 @@ describe('Compression', () => {
   })
 
   it('handle deflate compression', async () => {
-    const app = new Hono().use('*', compress({ type: 'deflate' })).get('/', handler)
+    const app = new Hono().use(compress()).get('/', handler)
 
     const res = await app.request(req('deflate'))
 
@@ -36,7 +49,7 @@ describe('Compression', () => {
   })
 
   it('accept additional headers', async () => {
-    const app = new Hono().use('*', compress({ type: 'deflate' })).get('/', (c) => {
+    const app = new Hono().use(compress({ encoding: 'deflate' })).get('/', (c) => {
       c.res.headers.set('x-powered-by', 'Hono')
       return handler(c)
     })
@@ -48,7 +61,7 @@ describe('Compression', () => {
   })
 
   it('return correct plain/text', async () => {
-    const app = new Hono().use('*', compress({ type: 'deflate' })).get('/', handler)
+    const app = new Hono().use(compress({ encoding: 'deflate' })).get('/', handler)
 
     const res = await app.request(req('deflate'))
 
@@ -57,7 +70,7 @@ describe('Compression', () => {
 
   it('return correct application/json', async () => {
     const app = new Hono()
-      .use('*', compress({ type: 'deflate' }))
+      .use('*', compress({ encoding: 'deflate' }))
       .get('/', (c) => c.json({ hello: 'world' }))
 
     const res = await app.request(req('deflate'))
@@ -76,41 +89,15 @@ describe('Compression', () => {
   })
 
   it('return correct image type', async () => {
-    const app = new Hono().use('*', compress())
+    const app = new Hono().use(compress())
 
     app.get('/', async (c) =>
       c.body(await Bun.file('tests/mei.jpg').arrayBuffer(), 200, {
         'Content-Type': 'image/jpeg',
       }),
     )
-    const res = await app.request(req())
+    const res = await app.request(req('deflate'))
 
     expect(res.headers.get('Content-Type')).toBe('image/jpeg')
-  })
-
-  it('handle gzip compression', async () => {
-    const app = new Hono().use('*', compress()).get('/', handler)
-
-    const res = await app.request(req('gzip'))
-
-    expect(res.headers.get('Content-Encoding')).toBe('gzip')
-  })
-
-  it('handle deflate compression', async () => {
-    const app = new Hono().use('*', compress({ type: 'deflate' })).get('/', handler)
-
-    const res = await app.request(req('deflate'))
-
-    expect(res.headers.get('Content-Encoding')).toBe('deflate')
-  })
-
-  it('accept additional headers', async () => {
-    const app = new Hono().use('*', compress({ type: 'deflate' })).get('/', (c) => {
-      c.res.headers.set('x-powered-by', 'Hono')
-      return handler(c)
-    })
-    const res = await app.request(req('deflate'))
-    expect(res.headers.get('Content-Encoding')).toBe('deflate')
-    expect(res.headers.get('x-powered-by')).toBe('Hono')
   })
 })
