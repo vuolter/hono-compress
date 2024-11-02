@@ -31,13 +31,17 @@ const app = new Hono()
 app.use(compress())
 ```
 
-## Configuration
+### Configuration
 
-### encoding
+```typescript
+compress({ encoding, encodings, options, threshold, zstdLevel })
+```
+
+#### encoding
 
 Defaults to `undefined`.
 
-The encoding algorithm to use to compress the response content.
+The compression format to use to compress the response content.
 Can be one of the following:
 
 - `zstd`
@@ -45,15 +49,17 @@ Can be one of the following:
 - `gzip`
 - `deflate`
 
-If not defined, all the encodings are allowed based on the request header `Accept-Encoding` and will be used in their order of declaration.
+If not defined, all the supported encodings are allowed based on the request header `Accept-Encoding` and will be used in their order of declaration.
 
-### encodings
+This option is available mainly to maintain compatibility with `hono/compress`, it's recommended to set the compression formats using `encodings` instead.
+
+#### encodings
 
 Defaults to `['zstd', 'br', 'gzip', 'deflate']`.
 
-The encoding algorithms allowed to be used to compress the response content.
+The compression formats allowed to be used to compress the response content.
 
-### options
+#### options
 
 Defaults to `{}`.
 
@@ -61,13 +67,13 @@ Options passed to the node compression engine to compress content.
 
 Refer to the node Zlib [documentation](https://nodejs.org/api/zlib.html) for more details.
 
-### threshold
+#### threshold
 
 Defaults to `1024`.
 
 The minimum size in bytes for a response content to be compressed.
 
-### zstdLevel
+#### zstdLevel
 
 Defaults to `3`.
 
