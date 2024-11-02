@@ -23,15 +23,19 @@
     "type": "git",
     "url": "https://github.com/sunneydev/bun-compression"
   },
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.cts",
   "exports": {
-    "bun": "./dist/index.js",
-    "node": "./dist/cjs/index.js",
-    "require": "./dist/cjs/index.js",
-    "import": "./dist/index.js",
-    "default": "./dist/index.js"
+    "require": {
+      "types": "./dist/index.d.cts",
+      "default": "./dist/index.cjs"
+    },
+    "import": {
+      "types": "./dist/index.d.mts",
+      "default": "./dist/index.mjs"
+    }
   },
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
   "url": "https://github.com/vuolter/hono-compress",
   "keywords": [
     "hono",
@@ -43,7 +47,7 @@
   ],
   "license": "MIT",
   "scripts": {
-    "build": "rm -rf dist && tsc --project tsconfig.esm.json && tsc --project tsconfig.cjs.json",
+    "build": "pkgroll --clean-dist --minify",
     "test": "bun test",
     "release": "npm run build && npm publish --access public",
     "format": "prettier . --write",
@@ -56,6 +60,7 @@
   "devDependencies": {
     "@types/bun": "^1.1.12",
     "eslint": "^8.57.1",
+    "pkgroll": "^2.5.1",
     "prettier": "^4.0.0-alpha.10",
     "typescript": "^5.6.3"
   },
