@@ -5,18 +5,26 @@
  * */
 
 import type { MiddlewareHandler } from 'hono'
-import { gzipSync, deflateSync } from 'bun'
-import { CompressionStream } from './stream'
-import type { CompressOptions } from './types'
+import { NodeCompressionStream } from './node-stream'
+import type { CompressOptions, WebCompressionEncoding } from './types'
 
-export const ACCEPTED_ENCODINGS = ['br', 'gzip', 'deflate'] as const
+import { compress as ZstdCompress } from '@mongodb-js/zstd'
+import {
+  isBun,
+  isCloudflare,
+  isDeno,
+  readContentLength,
+  shouldCompress,
+  shouldTransform,
+} from './helpers'
+import { ACCEPTED_ENCODINGS, WEB_ENCODINGS } from './constants'
 
 export const compress = ({
   encoding,
   encodings = [...ACCEPTED_ENCODINGS],
   options = {},
-  streamOptions = {},
   threshold = 1024,
+  zstdLevel = 3,
 }: CompressOptions = {}): MiddlewareHandler => {
   // NOTE: If defined, uses `encoding` as the only compression scheme as does `hono/compress`
   if (encoding) {
@@ -34,41 +42,88 @@ export const compress = ({
   return async function compress(c, next) {
     await next()
 
-    let compressedBody
+    let body = c.res.body
 
-    const body = c.res.body
-
+    // skip no content
     if (!body) {
+      return
+    }
+
+    // skip head request
+    if (c.req.method === 'HEAD') {
+      return
+    }
+
+    // skip already encoded
+    if (c.res.headers.has('Content-Encoding')) {
+      return
+    }
+
+    // skip already compressing runtimes
+    if (isDeno || isCloudflare) {
+      return
+    }
+
+    // skip un-compressible content
+    if (!shouldCompress(c.res)) {
+      return
+    }
+
+    // skip un-transformable content
+    if (!shouldTransform(c.res)) {
       return
     }
 
     const acceptedEncoding = c.req.header('Accept-Encoding')
 
+    // skip no accepted encoding
     if (!acceptedEncoding) {
       return
     }
 
     const encoding = encodings.find((enc) => acceptedEncoding.includes(enc))
 
+    // skip unsupported encoding
     if (!encoding) {
       return
     }
 
-    const isReadableStream = body instanceof ReadableStream
+    let contentLength = Number(c.res.headers.get('Content-Length'))
 
-    if (isReadableStream) {
-      compressedBody = body.pipeThrough(new CompressionStream(encoding, streamOptions))
-    } else {
-      const buffer = await c.req.arrayBuffer()
+    // calculate unknow content length
+    if (!contentLength) {
+      const { stream, length } = await readContentLength(body, threshold)
 
-      if (buffer.byteLength < threshold) {
-        return
-      }
-      const compress = encoding === 'gzip' ? gzipSync : deflateSync
-      compressedBody = compress(buffer, options)
+      body = stream
+      contentLength = length
     }
 
-    c.res = new Response(compressedBody, { headers: c.res.headers })
+    // skip small size content
+    if (contentLength < threshold) {
+      return
+    }
+
+    let compressedBody
+
+    if (encoding === 'zstd') {
+      // TODO: handle as stream
+      const buffer = Buffer.from(await c.req.arrayBuffer())
+      compressedBody = await ZstdCompress(buffer, zstdLevel)
+    } else {
+      let stream
+
+      if (!isBun && WEB_ENCODINGS.includes(encoding as any)) {
+        stream = new CompressionStream(encoding as WebCompressionEncoding)
+      } else {
+        stream = new NodeCompressionStream(encoding, options)
+      }
+
+      compressedBody = body.pipeThrough(stream)
+    }
+
+    c.res = new Response(compressedBody, c.res)
+
+    c.res.headers.delete('Content-Length')
     c.res.headers.set('Content-Encoding', encoding)
   }
 }
