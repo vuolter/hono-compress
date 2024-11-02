@@ -1,18 +1,10 @@
 {
+  "extends": "./tsconfig.json",
   "compilerOptions": {
-    "target": "ES2022",
-    "lib": ["ESNext", "DOM", "ScriptHost"],
     "module": "CommonJS",
-    "moduleResolution": "node",
-    "baseUrl": "./src",
-    "types": ["bun-types"],
-    "declaration": true,
-    "outDir": "./dist/cjs",
-    "removeComments": true,
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-    "strict": true,
-    "skipLibCheck": true
+    "moduleResolution": "Node",
+    "verbatimModuleSyntax": false,
+    "outDir": "./dist/cjs"
   },
   "include": ["src/**/*"]
 }

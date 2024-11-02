@@ -1,15 +1,51 @@
 {
   "compilerOptions": {
-    "target": "ES2020",
-    "lib": ["ESNext", "DOM", "ScriptHost"],
-    "module": "ES2022",
-    "moduleResolution": "node",
-    "types": ["bun-types"],
-    "declaration": true,
+    // Type Checking
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitOverride": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "noUncheckedIndexedAccess": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "strict": true,
+
+    // Modules
+    "allowImportingTsExtensions": true,
+    "module": "preserve",
+    "moduleResolution": "bundler",
+    "paths": {
+      "~/*": ["./src/*"],
+      "~~/*": ["./*"]
+    },
+    "resolveJsonModule": true,
+
+    // Emit
     "noEmit": true,
+    "removeComments": true,
+
+    // JavaScript Support
+    "allowJs": false,
+
+    // Interop Constraints
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
-    "strict": true,
+    "isolatedModules": true,
+    "verbatimModuleSyntax": true,
+
+    // Language and Environment
+    // "experimentalDecorators": true,
+    "jsx": "react-jsx",
+    "jsxImportSource": "hono/jsx",
+    "lib": ["ESNext", "DOM", "DOM.AsyncIterable"],
+    "moduleDetection": "force",
+    "target": "esnext",
+    "useDefineForClassFields": true,
+
+    // Projects
+    "composite": true,
+
+    // Completeness
     "skipLibCheck": true
-  }
+  },
+  "include": ["./**/*", "./src/**/*"]
 }
