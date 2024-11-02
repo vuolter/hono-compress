@@ -1,6 +1,6 @@
 import { compress } from './middleware'
 
-export * from './stream'
+export * from './node-stream'
 export * from './types'
 export { compress }
 
