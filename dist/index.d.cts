@@ -10,15 +10,15 @@ type NodeCompressionOptions = BrotliOptions | ZlibOptions;
 interface CompressOptions {
     encoding?: CompressionEncoding;
     encodings?: CompressionEncoding[];
-    options?: NodeCompressionOptions;
     threshold?: number;
     zstdLevel?: number;
     brotliLevel?: number;
     zlibLevel?: number;
+    options?: NodeCompressionOptions;
     filter?: (c: Context) => boolean;
 }
 
-declare const compress: ({ encoding, encodings, options, threshold, zstdLevel, brotliLevel, zlibLevel, filter, }?: CompressOptions) => MiddlewareHandler;
+declare const compress: ({ encoding, encodings, threshold, zstdLevel, brotliLevel, zlibLevel, options, filter, }?: CompressOptions) => MiddlewareHandler;
 
 declare class ZstdCompressionStream extends TransformStream {
     constructor(level?: number);
