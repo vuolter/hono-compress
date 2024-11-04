@@ -4,12 +4,11 @@ import {
   CLOUDFLARE_WORKERS_NAVIGATOR,
 } from './constants'
 
-export const isBun = !!process.versions.bun
-
-export const isCloudflare =
+export const isCloudflareWorkers =
   globalThis.navigator?.userAgent === CLOUDFLARE_WORKERS_NAVIGATOR
 
-export const isDeno = !!(globalThis as any).Deno
+export const isDenoDeploy =
+  (globalThis as any).Deno?.env?.get('DENO_DEPLOYMENT_ID') !== undefined
 
 export function shouldCompress(res: Response) {
   const type = res.headers.get('Content-Type')
@@ -23,18 +22,20 @@ export function shouldTransform(res: Response) {
   return !cacheControl || !CACHECONTROL_NOTRANSFORM_REGEXP.test(cacheControl)
 }
 
-export async function readContentLength(readable: ReadableStream, bytes: number) {
-  const [content, stream] = readable.tee()
+const brotliPromise = import('brotli-wasm')
 
-  let length = 0
+export let brotli: Awaited<typeof brotliPromise>
 
-  for await (const chunk of content) {
-    length += chunk.length
+brotliPromise.then((module) => {
+  brotli = module
+})
 
-    if (length >= bytes) {
-      break
-    }
-  }
+const zlibPromise = import('node:zlib')
 
-  return { stream, length }
-}
+export let zlib: Awaited<typeof zlibPromise>
+
+zlibPromise
+  .then((module) => {
+    zlib = module
+  })
+  .catch(null)
