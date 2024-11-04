@@ -2,7 +2,7 @@
 
 Compression plugin for [Hono](https://github.com/honojs/hono)
 
-Drop-in replacement of the official [Compress Middleware](https://hono.dev/docs/middleware/builtin/compress), but with extra features
+Drop-in replacement of the built-in [Compress Middleware](https://hono.dev/docs/middleware/builtin/compress), but with extra features
 
 ### Features
 
@@ -12,8 +12,8 @@ Drop-in replacement of the official [Compress Middleware](https://hono.dev/docs/
 - content size threshold
 - compressed content detection
 - custom filtering
-- Cloudflare Workers and Deno Deploy checks
-- works under Node, edge runtimes and [Bun](https://bun.sh/)
+- Cloudflare Workers and Deno Deploy compression check
+- works with [Node](https://nodejs.org/), [Deno](https://deno.com/), [Bun](https://bun.sh/) and edge runtime
 
 ## Installation
 
@@ -35,7 +35,16 @@ app.use(compress())
 ### Configuration
 
 ```typescript
-compress({ encoding, encodings, options, threshold, zstdLevel })
+compress({
+  encoding,
+  encodings,
+  threshold,
+  zstdLevel,
+  brotliLevel,
+  zlibLevel,
+  options,
+  filter,
+})
 ```
 
 #### encoding
@@ -60,14 +69,6 @@ Defaults to `['zstd', 'br', 'gzip', 'deflate']`.
 
 The compression formats allowed to be used to compress the response content.
 
-#### options
-
-Defaults to `{}`.
-
-Options passed to the node compression engine to compress content.
-
-Refer to the node zlib [documentation](https://nodejs.org/api/zlib.html) for more details.
-
 #### threshold
 
 Defaults to `1024`.
@@ -76,7 +77,7 @@ The minimum size in bytes for a response content to be compressed.
 
 #### zstdLevel
 
-Defaults to `3`.
+Defaults to `2`.
 
 Zstandard algorithm compression level.
 
@@ -88,14 +89,34 @@ Defaults to `11`.
 
 Brotli algorithm compression level.
 
+Refer to the Brotli [website](https://www.brotli.org/) for more details.
+
 #### zlibLevel
 
 Defaults to `6`.
 
 Zlib algorithms compression level.
 
+Refer to the zlib [manual](https://zlib.net/manual.html) for more details.
+
+#### options
+
+Defaults to `{}`.
+
+Options passed to the node compression engine to compress content.
+
+Refer to the node zlib [documentation](https://nodejs.org/api/zlib.html) for more details.
+
 #### filter
 
 Defaults to `undefined`.
 
-A function callback to state if response content can be compressed or not.
+A function callback to state if response content should be compressed or not.
+
+## About
+
+This project is a fork of [bun-compression](https://github.com/sunneydev/bun-compression), which itself is a fork of [elysia-compression](https://github.com/gusb3ll/elysia-compression).
+
+Both projects were not maintained and lacked many of the features I was looking for, so I started with them, but ended up rewriting and expanding many parts.
+
+This project was also inspired by [hono/compress](https://github.com/honojs/hono), [expressjs/compression](https://github.com/expressjs/compression) and [elysia-compress](https://github.com/vermaysha/elysia-compress).
