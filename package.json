@@ -1,24 +1,12 @@
 {
   "name": "hono-compress",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "type": "module",
   "description": "Compression plugin for Hono working with Bun",
   "author": {
     "name": "Walter Purcaro",
     "url": "https://github.com/vuolter"
   },
-  "contributors": [
-    {
-      "name": "sunneydev",
-      "url": "https://github.com/sunneydev",
-      "email": "hi@sunney.dev"
-    },
-    {
-      "name": "Gusb3ll",
-      "url": "https://github.com/gusb3ll",
-      "email": "contact@gusbell.tech"
-    }
-  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/sunneydev/bun-compression"
@@ -59,6 +47,7 @@
   },
   "devDependencies": {
     "@types/bun": "^1.1.12",
+    "@types/node": "^22.8.7",
     "eslint": "^8.57.1",
     "pkgroll": "^2.5.1",
     "prettier": "^4.0.0-alpha.10",
