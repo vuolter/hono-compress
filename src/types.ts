@@ -39,7 +39,7 @@ export interface CompressOptions {
   /**
    * Zstandard algorithm compression level
    *
-   * @default 3
+   * @default 2
    */
   zstdLevel?: number
 
