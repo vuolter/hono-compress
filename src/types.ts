@@ -23,13 +23,6 @@ export interface CompressOptions {
   encodings?: CompressionEncoding[]
 
   /**
-   * Options passed to the node zlib compression engine.
-   *
-   * @param {Object}
-   */
-  options?: NodeCompressionOptions
-
-  /**
    * The minimum size in bytes for a response content to be compressed.
    *
    * @default 1024
@@ -56,6 +49,13 @@ export interface CompressOptions {
    * @default 6
    */
   zlibLevel?: number
+
+  /**
+   * Options passed to the node zlib compression engine.
+   *
+   * @param {Object}
+   */
+  options?: NodeCompressionOptions
 
   /**
    * Custom filter function.

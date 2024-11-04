@@ -29,11 +29,11 @@ import {
 export const compress = ({
   encoding,
   encodings = [...ACCEPTED_ENCODINGS],
-  options = {},
   threshold = THRESHOLD_SIZE,
   zstdLevel = ZSTD_LEVEL,
   brotliLevel = BROTLI_LEVEL,
   zlibLevel = ZLIB_LEVEL,
+  options = {},
   filter,
 }: CompressOptions = {}): MiddlewareHandler => {
   // NOTE: uses `encoding` as the only compression scheme
