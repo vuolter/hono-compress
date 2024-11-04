@@ -6,13 +6,14 @@ Drop-in replacement of the official [Compress Middleware](https://hono.dev/docs/
 
 ### Features
 
-- all compression formats allowed: `zstd`, `br`, `gzip`, `deflate`
+- all compression formats: `zstd`, `br`, `gzip`, `deflate`
 - auto-select format according request headers
 - configurable compression options
-- response size threshold with stream data support
+- content size threshold
 - compressed content detection
-- Cloudflare Workers and Deno Deploy detection
-- working with [Bun](https://bun.sh/)
+- custom filtering
+- Cloudflare Workers and Deno Deploy checks
+- works under Node, edge runtimes and [Bun](https://bun.sh/)
 
 ## Installation
 
@@ -65,7 +66,7 @@ Defaults to `{}`.
 
 Options passed to the node compression engine to compress content.
 
-Refer to the node Zlib [documentation](https://nodejs.org/api/zlib.html) for more details.
+Refer to the node zlib [documentation](https://nodejs.org/api/zlib.html) for more details.
 
 #### threshold
 
@@ -80,3 +81,21 @@ Defaults to `3`.
 Zstandard algorithm compression level.
 
 Refer to the zstd [manual](https://facebook.github.io/zstd/zstd_manual.html) for more details.
+
+#### brotliLevel
+
+Defaults to `11`.
+
+Brotli algorithm compression level.
+
+#### zlibLevel
+
+Defaults to `6`.
+
+Zlib algorithms compression level.
+
+#### filter
+
+Defaults to `undefined`.
+
+A function callback to state if response content can be compressed or not.
