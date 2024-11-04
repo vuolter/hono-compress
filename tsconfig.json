@@ -36,7 +36,7 @@
     // "experimentalDecorators": true,
     "jsx": "react-jsx",
     "jsxImportSource": "hono/jsx",
-    "lib": ["ESNext", "DOM", "DOM.AsyncIterable"],
+    "lib": ["ESNext"],
     "moduleDetection": "force",
     "target": "esnext",
     "useDefineForClassFields": true,
