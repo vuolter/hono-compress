@@ -5,31 +5,43 @@
  * */
 
 import type { MiddlewareHandler } from 'hono'
-import { NodeCompressionStream } from './node-stream'
-import type { CompressOptions, WebCompressionEncoding } from './types'
-
-import { compress as ZstdCompress } from '@mongodb-js/zstd'
 import {
-  isBun,
-  isCloudflare,
-  isDeno,
-  readContentLength,
+  ZstdCompressionStream,
+  BrotliCompressionStream,
+  ZlibCompressionStream,
+} from './streams'
+import type { CompressOptions } from './types'
+import {
+  isCloudflareWorkers,
+  isDenoDeploy,
   shouldCompress,
   shouldTransform,
+  zlib,
 } from './helpers'
-import { ACCEPTED_ENCODINGS, WEB_ENCODINGS } from './constants'
+import {
+  ACCEPTED_ENCODINGS,
+  BROTLI_LEVEL,
+  THRESHOLD_SIZE,
+  ZLIB_LEVEL,
+  ZSTD_LEVEL,
+} from './constants'
 
 export const compress = ({
   encoding,
   encodings = [...ACCEPTED_ENCODINGS],
   options = {},
-  threshold = 1024,
-  zstdLevel = 3,
+  threshold = THRESHOLD_SIZE,
+  zstdLevel = ZSTD_LEVEL,
+  brotliLevel = BROTLI_LEVEL,
+  zlibLevel = ZLIB_LEVEL,
+  filter,
 }: CompressOptions = {}): MiddlewareHandler => {
-  // NOTE: If defined, uses `encoding` as the only compression scheme as does `hono/compress`
+  // NOTE: uses `encoding` as the only compression scheme
   if (encoding) {
     encodings = [encoding]
   }
+
+  options = { ...options, level: zlibLevel }
 
   const unsupportedEncoding: string | undefined = encodings.find(
     (enc) => !ACCEPTED_ENCODINGS.includes(enc),
@@ -59,21 +71,6 @@ export const compress = ({
       return
     }
 
-    // skip already compressing runtimes
-    if (isDeno || isCloudflare) {
-      return
-    }
-
-    // skip un-compressible content
-    if (!shouldCompress(c.res)) {
-      return
-    }
-
-    // skip un-transformable content
-    if (!shouldTransform(c.res)) {
-      return
-    }
-
     const acceptedEncoding = c.req.header('Accept-Encoding')
 
     // skip no accepted encoding
@@ -90,38 +87,43 @@ export const compress = ({
 
     let contentLength = Number(c.res.headers.get('Content-Length'))
 
-    // calculate unknow content length
-    if (!contentLength) {
-      const { stream, length } = await readContentLength(body, threshold)
-
-      body = stream
-      contentLength = length
-    }
-
     // skip small size content
-    if (contentLength < threshold) {
+    if (contentLength && contentLength < threshold) {
       return
     }
 
-    let compressedBody
-
-    if (encoding === 'zstd') {
-      // TODO: handle as stream
-      const buffer = Buffer.from(await c.req.arrayBuffer())
-      compressedBody = await ZstdCompress(buffer, zstdLevel)
-    } else {
-      let stream
-
-      if (!isBun && WEB_ENCODINGS.includes(encoding as any)) {
-        stream = new CompressionStream(encoding as WebCompressionEncoding)
-      } else {
-        stream = new NodeCompressionStream(encoding, options)
-      }
-
-      compressedBody = body.pipeThrough(stream)
+    // skip un-compressible content
+    if (!shouldCompress(c.res)) {
+      return
     }
 
-    c.res = new Response(compressedBody, c.res)
+    // skip un-transformable content
+    if (!shouldTransform(c.res)) {
+      return
+    }
+
+    // skip by filter callback result or already compressing runtimes
+    if (filter != null) {
+      if (!filter(c)) {
+        return
+      }
+    } else if (isDenoDeploy || isCloudflareWorkers) {
+      return
+    }
+
+    let stream
+
+    if (encoding === 'zstd') {
+      stream = new ZstdCompressionStream(zstdLevel)
+    } else if (zlib) {
+      stream = new ZlibCompressionStream(encoding, options)
+    } else if (encoding === 'br') {
+      stream = new BrotliCompressionStream(brotliLevel)
+    } else {
+      stream = new CompressionStream(encoding)
+    }
+
+    c.res = new Response(body.pipeThrough(stream), c.res)
 
     c.res.headers.delete('Content-Length')
     c.res.headers.set('Content-Encoding', encoding)
