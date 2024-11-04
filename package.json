@@ -65,6 +65,7 @@
     "typescript": "^5.6.3"
   },
   "dependencies": {
-    "@mongodb-js/zstd": "^1.2.2"
+    "@mongodb-js/zstd": "^1.2.2",
+    "brotli-wasm": "^3.0.1"
   }
 }
