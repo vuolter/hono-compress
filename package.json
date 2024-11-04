@@ -1,6 +1,6 @@
 {
   "name": "hono-compress",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "type": "module",
   "description": "Compression plugin for Hono working with Bun",
   "author": {
@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/sunneydev/bun-compression"
+    "url": "https://github.com/vuolter/hono-compress"
   },
   "main": "./dist/index.cjs",
   "module": "./dist/index.mjs",
@@ -28,7 +28,11 @@
   "keywords": [
     "hono",
     "compression",
+    "node",
+    "deno",
     "bun",
+    "edge",
+    "zstd",
     "brotli",
     "gzip",
     "deflate"
@@ -46,7 +50,7 @@
     "hono": "^4.6.8"
   },
   "devDependencies": {
-    "@types/bun": "^1.1.12",
+    "@types/bun": "^1.1.13",
     "@types/node": "^22.8.7",
     "eslint": "^8.57.1",
     "pkgroll": "^2.5.1",
