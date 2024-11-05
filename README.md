@@ -85,7 +85,7 @@ Refer to the zstd [manual](https://facebook.github.io/zstd/zstd_manual.html) for
 
 #### brotliLevel
 
-Defaults to `11`.
+Defaults to `4`.
 
 Brotli algorithm compression level.
 
