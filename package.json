@@ -1,6 +1,6 @@
 {
   "name": "hono-compress",
-  "version": "0.4.2",
+  "version": "0.4.3",
   "type": "module",
   "description": "Compression plugin for Hono working with Bun",
   "author": {
@@ -51,7 +51,7 @@
   },
   "devDependencies": {
     "@types/bun": "^1.1.13",
-    "@types/node": "^22.8.7",
+    "@types/node": "^22.9.0",
     "eslint": "^8.57.1",
     "pkgroll": "^2.5.1",
     "prettier": "^4.0.0-alpha.10",
