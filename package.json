@@ -41,7 +41,6 @@
   "scripts": {
     "build": "pkgroll --clean-dist --minify",
     "test": "bun test",
-    "release": "npm run build && npm publish --access public",
     "format": "prettier . --write",
     "lint": "eslint --cache --cache-location node_modules/.cache/eslint --cache-strategy content --fix .",
     "typecheck": "tsc --noEmit"

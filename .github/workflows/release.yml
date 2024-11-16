@@ -1,0 +1,25 @@
+name: Publish Release to GitHub
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Publish release
+        uses: ghalactic/github-release-from-tag@v5
+        with:
+          generateReleaseNotes: 'true'
+          prerelease: 'false'
+          reactions: +1,heart,rocket
+          summaryEnabled: 'false'
