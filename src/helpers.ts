@@ -1,4 +1,5 @@
 import { COMPRESSIBLE_CONTENT_TYPE_REGEX } from 'hono/utils/compress'
+
 import {
   CACHECONTROL_NOTRANSFORM_REGEXP,
   CLOUDFLARE_WORKERS_NAVIGATOR,
@@ -38,4 +39,4 @@ zlibPromise
   .then((module) => {
     zlib = module
   })
-  .catch(null)
+  .catch(() => null)
