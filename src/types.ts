@@ -8,6 +8,7 @@ export type CompressionEncoding = (typeof ACCEPTED_ENCODINGS)[number]
 export type NodeCompressionEncoding = (typeof NODE_ENCODINGS)[number]
 export type NodeCompressionOptions = BrotliOptions | ZlibOptions
 
+export type CompressionFilter = (c: Context) => boolean
 
 export interface CompressOptions {
   /**
@@ -48,5 +49,5 @@ export interface CompressOptions {
   /**
    * Custom filter function
    */
-  filter?: (c: Context) => boolean
+  filter?: CompressionFilter
 }
