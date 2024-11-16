@@ -1,7 +1,8 @@
 import zstd from '@mongodb-js/zstd'
 
 import type { NodeCompressionEncoding, NodeCompressionOptions } from './types'
-import { zlib, brotli } from './helpers'
+
+import { brotli, zlib } from './helpers'
 
 export class ZstdCompressionStream extends TransformStream {
   constructor(level?: number) {
@@ -37,12 +38,12 @@ export class ZlibCompressionStream {
         handle = zlib.createBrotliCompress(options)
         break
       }
-      case 'gzip': {
-        handle = zlib.createGzip(options)
-        break
-      }
       case 'deflate': {
         handle = zlib.createDeflate(options)
+        break
+      }
+      case 'gzip': {
+        handle = zlib.createGzip(options)
         break
       }
       default: {

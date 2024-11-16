@@ -1,19 +1,23 @@
-import { describe, it, expect } from 'bun:test'
+import { describe, expect, it } from 'bun:test'
+import { type Context, Hono } from 'hono'
 
 import type { CompressionEncoding } from '../src/types'
+
 import { compress } from '../src'
-import { Hono, type Context } from 'hono'
 
-const req = (encoding: CompressionEncoding) =>
-  new Request('http://localhost/', { headers: { 'Accept-Encoding': encoding } })
-
-const text = `
+const TEXT = `
 もしも願いが一つ叶うなら
 世界でたった一人だけの友達を
 生きることは素晴らしいこと
 そんなふうに私も思ってみたい`
 
-const handler = (c: Context) => c.text(text, 200, { 'Content-Type': 'text/plain' })
+function handler(c: Context) {
+  return c.text(TEXT, 200, { 'Content-Type': 'text/plain' })
+}
+
+function req(encoding: CompressionEncoding) {
+  return new Request('http://localhost/', { headers: { 'Accept-Encoding': encoding } })
+}
 
 describe('Compression', () => {
   it('handle zstd compression', async () => {

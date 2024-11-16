@@ -1,30 +1,17 @@
 {
   "name": "hono-compress",
-  "version": "0.4.3",
   "type": "module",
+  "version": "0.4.3",
   "description": "Compression plugin for Hono working with Bun",
   "author": {
     "name": "Walter Purcaro",
     "url": "https://github.com/vuolter"
   },
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/vuolter/hono-compress"
   },
-  "main": "./dist/index.cjs",
-  "module": "./dist/index.mjs",
-  "types": "./dist/index.d.cts",
-  "exports": {
-    "require": {
-      "types": "./dist/index.d.cts",
-      "default": "./dist/index.cjs"
-    },
-    "import": {
-      "types": "./dist/index.d.mts",
-      "default": "./dist/index.mjs"
-    }
-  },
-  "url": "https://github.com/vuolter/hono-compress",
   "keywords": [
     "hono",
     "compression",
@@ -37,7 +24,20 @@
     "gzip",
     "deflate"
   ],
-  "license": "MIT",
+  "exports": {
+    "import": {
+      "types": "./dist/index.d.mts",
+      "default": "./dist/index.mjs"
+    },
+    "require": {
+      "types": "./dist/index.d.cts",
+      "default": "./dist/index.cjs"
+    }
+  },
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.cts",
+  "url": "https://github.com/vuolter/hono-compress",
   "scripts": {
     "build": "pkgroll --clean-dist --minify",
     "test": "bun test",
@@ -47,6 +47,10 @@
   },
   "peerDependencies": {
     "hono": "^4.6.8"
+  },
+  "dependencies": {
+    "@mongodb-js/zstd": "^1.2.2",
+    "brotli-wasm": "^3.0.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.15.0",
@@ -68,9 +72,5 @@
     "prettier": "^4.0.0-alpha.10",
     "typescript": "^5.6.3",
     "typescript-eslint": "^8.14.0"
-  },
-  "dependencies": {
-    "@mongodb-js/zstd": "^1.2.2",
-    "brotli-wasm": "^3.0.1"
   }
 }
