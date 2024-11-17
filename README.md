@@ -80,6 +80,7 @@ app.use(compress())
 compress({
   encoding,
   encodings,
+  force,
   threshold,
   zstdLevel,
   brotliLevel,
@@ -111,7 +112,15 @@ Defaults to `['zstd', 'br', 'gzip', 'deflate']`.
 
 The compression format encodings allowed to be used to compress the response content.
 
-The first format matching the request header `Accept-Encoding` is chosen to be used to compress the response content.
+The first format matching the request accept-encoding is chosen to be used to compress the response content.
+
+### force
+
+Defaults to `false`.
+
+Forces content compression even if the request accept-encoding or the response content-type cannot be determined.
+
+Use with caution.
 
 ### threshold
 

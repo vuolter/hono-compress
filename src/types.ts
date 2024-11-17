@@ -22,6 +22,11 @@ export interface CompressOptions {
   encodings?: CompressionEncoding[]
 
   /**
+   * Forces content compression even if the request accept-encoding or the response content-type cannot be determined
+   */
+  force?: boolean
+
+  /**
    * The minimum size in bytes for a response content to be compressed
    */
   threshold?: number

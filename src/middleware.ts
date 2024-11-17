@@ -43,11 +43,12 @@ function checkResposeType(c: Context) {
   }
 }
 
-function checkResponseCompressible(c: Context, threshold: number) {
+function checkResponseCompressible(c: Context, threshold: number, force: boolean) {
   // NOTE: skip no-compression request
   if (c.req.header('x-no-compression')) {
     throw Error
   }
+
   // NOTE: skip already encoded
   if (c.res.headers.has('Content-Encoding')) {
     throw Error
@@ -61,7 +62,7 @@ function checkResponseCompressible(c: Context, threshold: number) {
   }
 
   // NOTE: skip un-compressible content
-  if (!shouldCompress(c.res)) {
+  if (!shouldCompress(c.res, force)) {
     throw Error
   }
 
@@ -82,7 +83,7 @@ function checkResponseFilter(c: Context, filter: CompressionFilter | null | unde
   }
 }
 
-function getAcceptedEncoding(c: Context, encodings: CompressionEncoding[]) {
+function findAcceptedEncoding(c: Context, encodings: CompressionEncoding[]) {
   const acceptedEncoding = c.req.header('Accept-Encoding')
 
   if (!acceptedEncoding) {
@@ -94,6 +95,7 @@ function getAcceptedEncoding(c: Context, encodings: CompressionEncoding[]) {
 export function compress({
   encoding,
   encodings = [...ACCEPTED_ENCODINGS],
+  force = false,
   threshold = THRESHOLD_SIZE,
   zstdLevel = ZSTD_LEVEL,
   brotliLevel = BROTLI_LEVEL,
@@ -116,13 +118,13 @@ export function compress({
     // NOTE: skip if checks failed
     try {
       checkResposeType(c)
-      checkResponseCompressible(c, threshold)
+      checkResponseCompressible(c, threshold, force)
       checkResponseFilter(c, filter)
     } catch {
       return
     }
 
-    const enc = getAcceptedEncoding(c, encodings)
+    const enc = findAcceptedEncoding(c, encodings) ?? (force && encodings[0])
 
     // NOTE: skip if no accepted encoding
     if (!enc) {
