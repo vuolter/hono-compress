@@ -74,7 +74,7 @@ const app = new Hono()
 app.use(compress())
 ```
 
-### Configuration
+## Configuration
 
 ```typescript
 compress({
@@ -89,11 +89,11 @@ compress({
 })
 ```
 
-#### encoding
+### encoding
 
 Defaults to `undefined`.
 
-The compression format to use to compress the response content.
+The compression format encoding to use to compress the response content.
 Can be one of the following:
 
 - `zstd`
@@ -101,49 +101,49 @@ Can be one of the following:
 - `gzip`
 - `deflate`
 
-If not defined, all the formats defined in the option `encodings` are allowed.
+If not defined, all the formats declared in the option `encodings` are allowed.
 
 This option is provided primarily to maintain compatibility with `hono/compress`; it is recommended to use the option `encodings` to set the wanted compression formats.
 
-#### encodings
+### encodings
 
 Defaults to `['zstd', 'br', 'gzip', 'deflate']`.
 
-The compression formats allowed to be used to compress the response content.
+The compression format encodings allowed to be used to compress the response content.
 
 The first format matching the request header `Accept-Encoding` is chosen to be used to compress the response content.
 
-#### threshold
+### threshold
 
 Defaults to `1024`.
 
 The minimum size in bytes for a response content to be compressed.
 
-#### zstdLevel
+### zstdLevel
 
 Defaults to `2`.
 
-Zstandard algorithm compression level.
+Zstandard algorithm compression level (encoding `zstd`).
 
 Refer to the zstd [manual](https://facebook.github.io/zstd/zstd_manual.html) for more details.
 
-#### brotliLevel
+### brotliLevel
 
 Defaults to `4`.
 
-Brotli algorithm compression level.
+Brotli algorithm compression level (encoding `br`).
 
 Refer to the Brotli [specification](https://www.ietf.org/rfc/rfc7932.txt) for more details.
 
-#### zlibLevel
+### zlibLevel
 
 Defaults to `6`.
 
-Zlib algorithms compression level.
+Zlib algorithms compression level (encoding `gzip` and `deflate`).
 
 Refer to the zlib [manual](https://zlib.net/manual.html) for more details.
 
-#### options
+### options
 
 Defaults to `{}`.
 
@@ -151,17 +151,17 @@ Options passed to the node compression engine to compress content.
 
 Refer to the node zlib [documentation](https://nodejs.org/api/zlib.html) for more details.
 
-#### filter
+### filter
 
 Defaults to `undefined`.
 
 An optional function callback to state if the response content should be compressed or not.
 
-**Parameters**
+#### Parameters
 
 - [Hono Context](https://hono.dev/docs/api/context)
 
-**Return value**
+#### Return value
 
 Boolean
 
@@ -179,6 +179,6 @@ compress({
 
 This project is a fork of [bun-compression](https://github.com/sunneydev/bun-compression), which itself is a fork of [elysia-compression](https://github.com/gusb3ll/elysia-compression).
 
-Both projects were not maintained and lacked many of the features I was looking for, so I started with them, but ended up rewriting and expanding many parts.
+Both projects were unmaintained and lacked many of the features I was looking for, so I started with them, but ended up improving and expanding many parts, eventually rewriting them from scratch.
 
 This project was also inspired by [hono/compress](https://github.com/honojs/hono), [expressjs/compression](https://github.com/expressjs/compression) and [elysia-compress](https://github.com/vermaysha/elysia-compress).
