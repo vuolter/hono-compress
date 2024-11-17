@@ -8,7 +8,7 @@ Drop-in replacement of the built-in [Compress Middleware](https://hono.dev/docs/
 
 - all available compression formats (`zstd`, `brotli`, `gzip`, `deflate`)
 - ultra-fast and 100% type-safe
-- auto best format selection
+- best format auto-selection
 - streaming response support
 - configurable compression level and zlib options
 - double-compressed content protection
@@ -101,15 +101,17 @@ Can be one of the following:
 - `gzip`
 - `deflate`
 
-If not defined, all the supported encodings are allowed based on the request header `Accept-Encoding` and will be used in their order of declaration.
+If not defined, all the formats defined in the option `encodings` are allowed.
 
-This option is provided mainly to maintain compatibility with `hono/compress`, it's recommended to set the compression formats using `encodings` instead.
+This option is provided primarily to maintain compatibility with `hono/compress`; it is recommended to use the option `encodings` to set the wanted compression formats.
 
 #### encodings
 
 Defaults to `['zstd', 'br', 'gzip', 'deflate']`.
 
 The compression formats allowed to be used to compress the response content.
+
+The first format matching the request header `Accept-Encoding` is chosen to be used to compress the response content.
 
 #### threshold
 
@@ -131,7 +133,7 @@ Defaults to `4`.
 
 Brotli algorithm compression level.
 
-Refer to the Brotli [website](https://www.brotli.org/) for more details.
+Refer to the Brotli [specification](https://www.ietf.org/rfc/rfc7932.txt) for more details.
 
 #### zlibLevel
 
@@ -153,7 +155,25 @@ Refer to the node zlib [documentation](https://nodejs.org/api/zlib.html) for mor
 
 Defaults to `undefined`.
 
-A function callback to state if response content should be compressed or not.
+An optional function callback to state if the response content should be compressed or not.
+
+**Parameters**
+
+- [Hono Context](https://hono.dev/docs/api/context)
+
+**Return value**
+
+Boolean
+
+By default, content compression is disabled on Cloudflare Workers and Deno Deploy, a custom filter can be used to bypass this behavior and force the response to be always compressed:
+
+```typescript
+import type { Context } from 'hono'
+
+compress({
+  filter: (c: Context) => true,
+})
+```
 
 ## About
 
