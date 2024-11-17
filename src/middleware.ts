@@ -22,44 +22,53 @@ import {
   ZstdCompressionStream,
 } from './streams'
 
+function checkCompressEncodings(encodings: CompressionEncoding[]) {
+  const unsupportedEncoding: string | undefined = encodings.find(
+    (enc) => !ACCEPTED_ENCODINGS.includes(enc),
+  )
+  if (unsupportedEncoding) {
+    throw new Error(`Invalid compression encoding: ${unsupportedEncoding}`)
+  }
+}
+
 function checkResposeType(c: Context) {
-  // skip no content
+  // NOTE: skip no content
   if (!c.res.body) {
     throw Error
   }
 
-  // skip head request
+  // NOTE: skip head request
   if (c.req.method === 'HEAD') {
     throw Error
   }
 }
 
 function checkResponseCompressible(c: Context, threshold: number) {
-  // skip already encoded
+  // NOTE: skip already encoded
   if (c.res.headers.has('Content-Encoding')) {
     throw Error
   }
 
   const contentLength = Number(c.res.headers.get('Content-Length'))
 
-  // skip small size content
+  // NOTE: skip small size content
   if (contentLength && contentLength < threshold) {
     throw Error
   }
 
-  // skip un-compressible content
+  // NOTE: skip un-compressible content
   if (!shouldCompress(c.res)) {
     throw Error
   }
 
-  // skip un-transformable content
+  // NOTE: skip un-transformable content
   if (!shouldTransform(c.res)) {
     throw Error
   }
 }
 
 function checkResponseFilter(c: Context, filter: CompressionFilter | null | undefined) {
-  // skip by filter callback result or already compressing runtimes
+  // NOTE: skip by callback result or if an already compressing runtime
   if (filter != null) {
     if (!filter(c)) {
       throw Error
@@ -75,7 +84,6 @@ function getAcceptedEncoding(c: Context, encodings: CompressionEncoding[]) {
   if (!acceptedEncoding) {
     return
   }
-
   return encodings.find((enc) => acceptedEncoding.includes(enc))
 }
 
@@ -89,16 +97,19 @@ export function compress({
   options = {},
   filter,
 }: CompressOptions = {}): MiddlewareHandler {
-  // NOTE: uses `encoding` as the only compression scheme
+  // NOTE: use `encoding` as the only compression scheme
   if (encoding) {
     encodings = [encoding]
   }
   options = { ...options, level: zlibLevel }
 
+  // NOTE: fail if unsupported encodings
+  checkCompressEncodings(encodings)
+
   return async function compress(c, next) {
     await next()
 
-    // skip checks failed
+    // NOTE: skip if checks failed
     try {
       checkResposeType(c)
       checkResponseCompressible(c, threshold)
@@ -109,7 +120,7 @@ export function compress({
 
     const enc = getAcceptedEncoding(c, encodings)
 
-    // skip no accepted encoding
+    // NOTE: skip if no accepted encoding
     if (!enc) {
       return
     }
