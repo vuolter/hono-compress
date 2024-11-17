@@ -6,19 +6,20 @@ Drop-in replacement of the built-in [Compress Middleware](https://hono.dev/docs/
 
 ### Features
 
-- all compression formats: `zstd`, `br`, `gzip`, `deflate`
-- auto-select format according request headers
-- configurable compression options
-- content size threshold
-- compressed content detection
-- custom filtering
-- Cloudflare Workers and Deno Deploy compression check
-- works with [Node](https://nodejs.org/), [Deno](https://deno.com/), [Bun](https://bun.sh/) and edge runtime
+- all available compression formats (`zstd`, `brotli`, `gzip`, `deflate`)
+- ultra-fast and 100% type-safe
+- auto best format selection
+- streaming response support
+- configurable compression level and zlib options
+- double-compressed content protection
+- content size threshold and custom filtering
+- Cloudflare Workers and Deno Deploy runtime detection
+- works with [Node](https://nodejs.org/), [Deno](https://deno.com/) and [Bun](https://bun.sh/)
 
 ## Installation
 
 ```bash
-bun add github:vuolter/hono-compress
+bun add hono-compress
 ```
 
 ## Usage
@@ -117,6 +118,6 @@ A function callback to state if response content should be compressed or not.
 
 This project is a fork of [bun-compression](https://github.com/sunneydev/bun-compression), which itself is a fork of [elysia-compression](https://github.com/gusb3ll/elysia-compression).
 
-Both projects were not maintained and lacked many of the features I was looking for, so I started with them, but ended up rewriting and expanding many parts.
+Both projects were not maintained and lacked many of the features I was looking for, so I started with them, but ended up rewriting and expanding many parts...
 
 This project was also inspired by [hono/compress](https://github.com/honojs/hono), [expressjs/compression](https://github.com/expressjs/compression) and [elysia-compress](https://github.com/vermaysha/elysia-compress).
