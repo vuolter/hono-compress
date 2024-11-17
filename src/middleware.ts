@@ -44,6 +44,10 @@ function checkResposeType(c: Context) {
 }
 
 function checkResponseCompressible(c: Context, threshold: number) {
+  // NOTE: skip no-compression request
+  if (c.req.header('x-no-compression')) {
+    throw Error
+  }
   // NOTE: skip already encoded
   if (c.res.headers.has('Content-Encoding')) {
     throw Error
