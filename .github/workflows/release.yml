@@ -2,6 +2,7 @@ name: Publish Release to GitHub
 
 on:
   push:
+    if: github.ref_name == 'main'
     tags:
       - 'v*'
 
@@ -21,5 +22,4 @@ jobs:
         with:
           generateReleaseNotes: 'true'
           prerelease: 'false'
-          reactions: +1,heart,rocket
           summaryEnabled: 'false'
