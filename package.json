@@ -1,7 +1,7 @@
 {
   "name": "hono-compress",
   "type": "module",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "description": "Compression plugin for Hono working with Bun",
   "author": {
     "name": "Walter Purcaro",
@@ -37,6 +37,9 @@
   "main": "./dist/index.cjs",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.cts",
+  "files": [
+    "dist"
+  ],
   "url": "https://github.com/vuolter/hono-compress",
   "scripts": {
     "build": "pkgroll --clean-dist --minify",
