@@ -2,7 +2,7 @@
 
 Compression plugin for [Hono](https://github.com/honojs/hono)
 
-Drop-in replacement of the built-in [Compress Middleware](https://hono.dev/docs/middleware/builtin/compress), but with extra features
+Drop-in replacement of the built-in [Compress Middleware](https://hono.dev/docs/middleware/builtin/compress), but with some extra...
 
 ### Features
 
@@ -18,9 +18,50 @@ Drop-in replacement of the built-in [Compress Middleware](https://hono.dev/docs/
 
 ## Installation
 
+<details open>
+<summary>npm</summary>
+
+```bash
+npm install hono-compress
+```
+
+</details>
+
+<details>
+<summary>Yarn</summary>
+
+```bash
+yarn add hono-compress
+```
+
+</details>
+
+<details>
+<summary>pnpm</summary>
+
+```bash
+pnpm add hono-compress
+```
+
+</details>
+
+<details>
+<summary>Bun</summary>
+
 ```bash
 bun add hono-compress
 ```
+
+</details>
+
+<details>
+<summary>Deno</summary>
+
+```bash
+deno add hono-compress
+```
+
+</details>
 
 ## Usage
 
@@ -62,7 +103,7 @@ Can be one of the following:
 
 If not defined, all the supported encodings are allowed based on the request header `Accept-Encoding` and will be used in their order of declaration.
 
-This option is available mainly to maintain compatibility with `hono/compress`, it's recommended to set the compression formats using `encodings` instead.
+This option is provided mainly to maintain compatibility with `hono/compress`, it's recommended to set the compression formats using `encodings` instead.
 
 #### encodings
 
@@ -118,6 +159,6 @@ A function callback to state if response content should be compressed or not.
 
 This project is a fork of [bun-compression](https://github.com/sunneydev/bun-compression), which itself is a fork of [elysia-compression](https://github.com/gusb3ll/elysia-compression).
 
-Both projects were not maintained and lacked many of the features I was looking for, so I started with them, but ended up rewriting and expanding many parts...
+Both projects were not maintained and lacked many of the features I was looking for, so I started with them, but ended up rewriting and expanding many parts.
 
 This project was also inspired by [hono/compress](https://github.com/honojs/hono), [expressjs/compression](https://github.com/expressjs/compression) and [elysia-compress](https://github.com/vermaysha/elysia-compress).
