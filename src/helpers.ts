@@ -3,7 +3,7 @@ import { COMPRESSIBLE_CONTENT_TYPE_REGEX } from 'hono/utils/compress'
 import {
   CACHECONTROL_NOTRANSFORM_REGEXP,
   CLOUDFLARE_WORKERS_NAVIGATOR,
-} from './constants'
+} from '~/constants'
 
 export const isCloudflareWorkers =
   globalThis.navigator?.userAgent === CLOUDFLARE_WORKERS_NAVIGATOR

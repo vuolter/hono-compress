@@ -1,8 +1,8 @@
 import zstd from '@mongodb-js/zstd'
 
-import type { NodeCompressionEncoding, NodeCompressionOptions } from './types'
+import type { NodeCompressionEncoding, NodeCompressionOptions } from '~/types'
 
-import { brotli, zlib } from './helpers'
+import { brotli, zlib } from '~/helpers'
 
 export class ZstdCompressionStream extends TransformStream {
   constructor(level?: number) {

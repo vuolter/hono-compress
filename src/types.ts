@@ -1,7 +1,7 @@
 import type { Context } from 'hono'
 import type { BrotliOptions, ZlibOptions } from 'node:zlib'
 
-import type { ACCEPTED_ENCODINGS, NODE_ENCODINGS } from './constants'
+import type { ACCEPTED_ENCODINGS, NODE_ENCODINGS } from '~/constants'
 
 export type CompressionEncoding = (typeof ACCEPTED_ENCODINGS)[number]
 

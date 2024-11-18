@@ -1,6 +1,6 @@
 import type { Context, MiddlewareHandler } from 'hono'
 
-import type { CompressionEncoding, CompressionFilter, CompressOptions } from './types'
+import type { CompressionEncoding, CompressionFilter, CompressOptions } from '~/types'
 
 import {
   ACCEPTED_ENCODINGS,
@@ -8,19 +8,19 @@ import {
   THRESHOLD_SIZE,
   ZLIB_LEVEL,
   ZSTD_LEVEL,
-} from './constants'
+} from '~/constants'
 import {
   isCloudflareWorkers,
   isDenoDeploy,
   shouldCompress,
   shouldTransform,
   zlib,
-} from './helpers'
+} from '~/helpers'
 import {
   BrotliCompressionStream,
   ZlibCompressionStream,
   ZstdCompressionStream,
-} from './streams'
+} from '~/streams'
 
 function checkCompressEncodings(encodings: CompressionEncoding[]) {
   const unsupportedEncoding: string | undefined = encodings.find(
