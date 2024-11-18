@@ -11,7 +11,7 @@ export const isCloudflareWorkers =
 export const isDenoDeploy =
   (globalThis as any).Deno?.env?.get('DENO_DEPLOYMENT_ID') !== undefined
 
-export function shouldCompress(res: Response, force: false) {
+export function shouldCompress(res: Response, force: boolean) {
   const type = res.headers.get('Content-Type')
   return type ? COMPRESSIBLE_CONTENT_TYPE_REGEX.test(type) : force
 }
