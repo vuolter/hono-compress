@@ -7,7 +7,7 @@ Drop-in replacement of the built-in [Compress Middleware](https://hono.dev/docs/
 ### Features
 
 - all available compression formats (`zstd`, `brotli`, `gzip`, `deflate`)
-- ultra-fast and 100% type-safe
+- ultra-fast and 100% type-safe ✨
 - best format auto-selection
 - streaming response support
 - configurable compression level and zlib options
@@ -15,6 +15,8 @@ Drop-in replacement of the built-in [Compress Middleware](https://hono.dev/docs/
 - content size threshold and custom filtering
 - Cloudflare Workers and Deno Deploy runtime detection
 - works with [Node](https://nodejs.org/), [Deno](https://deno.com/) and [Bun](https://bun.sh/)
+
+Leave a star on GitHub if you like it 🙏
 
 ## Installation
 
@@ -104,7 +106,7 @@ Can be one of the following:
 
 If not defined, all the formats declared in the option `encodings` are allowed.
 
-This option is provided primarily to maintain compatibility with `hono/compress`; it is recommended to use the option `encodings` to set the wanted compression formats.
+This option is provided primarily to maintain compatibility with `hono/compress`, use the option `encodings` to set the wanted compression formats.
 
 ### encodings
 
@@ -118,7 +120,7 @@ The first format matching the request accept-encoding is chosen to be used to co
 
 Defaults to `false`.
 
-Forces content compression even if the request accept-encoding or the response content-type cannot be determined.
+Forces content compression even if the request accept-encoding and the response content-type cannot be determined.
 
 Use with caution.
 
