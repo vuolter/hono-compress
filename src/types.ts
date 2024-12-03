@@ -22,7 +22,7 @@ export interface CompressOptions {
   encodings?: CompressionEncoding[]
 
   /**
-   * Forces content compression even if the request accept-encoding or the response content-type cannot be determined
+   * Forces content compression even if the request accept-encoding and the response content-type cannot be determined
    */
   force?: boolean
 
