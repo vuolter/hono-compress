@@ -1,7 +1,7 @@
 {
   "name": "hono-compress",
   "type": "module",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "description": "Compression plugin for Hono working with Bun",
   "author": {
     "name": "Walter Purcaro",
