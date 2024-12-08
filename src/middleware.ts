@@ -14,8 +14,8 @@ import {
   isDenoDeploy,
   shouldCompress,
   shouldTransform,
-  zlib,
 } from '~/helpers'
+import { zlib } from '~/imports'
 import {
   BrotliCompressionStream,
   ZlibCompressionStream,

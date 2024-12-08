@@ -22,21 +22,3 @@ export function shouldTransform(res: Response) {
   // https://tools.ietf.org/html/rfc7234#section-5.2.2.4
   return !cacheControl || !CACHECONTROL_NOTRANSFORM_REGEXP.test(cacheControl)
 }
-
-const brotliPromise = import('brotli-wasm')
-
-export let brotli: Awaited<typeof brotliPromise>
-
-brotliPromise.then((module) => {
-  brotli = module
-})
-
-const zlibPromise = import('node:zlib')
-
-export let zlib: Awaited<typeof zlibPromise>
-
-zlibPromise
-  .then((module) => {
-    zlib = module
-  })
-  .catch(() => null)
