@@ -51,7 +51,7 @@
     "lock": "bun install --silent && npm install --legacy-peer-deps --no-audit --no-fund --package-lock-only"
   },
   "peerDependencies": {
-    "hono": "^4.6.10"
+    "hono": "^4.6.12"
   },
   "dependencies": {
     "@mongodb-js/zstd": "^1.2.2",
@@ -62,16 +62,16 @@
     "@types/bun": "^1.1.14",
     "@types/eslint__js": "^8.42.3",
     "@types/node": "^22.10.1",
-    "eslint": "9.14.0",
+    "eslint": "9.16.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-import-resolver-typescript": "^3.7.0",
     "eslint-plugin-import-x": "^4.5.0",
     "eslint-plugin-markdown": "^5.1.0",
-    "eslint-plugin-perfectionist": "^3.9.1",
+    "eslint-plugin-perfectionist": "^4.2.0",
     "eslint-plugin-regexp": "^2.7.0",
     "eslint-plugin-security": "^3.0.1",
-    "eslint-plugin-sonarjs": "^2.0.4",
-    "eslint-plugin-tsdoc": "^0.3.0",
+    "eslint-plugin-sonarjs": "^3.0.0",
+    "eslint-plugin-tsdoc": "^0.4.0",
     "eslint-plugin-unicorn": "^56.0.1",
     "pkgroll": "^2.5.1",
     "prettier": "^4.0.0-alpha.10",
