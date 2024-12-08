@@ -42,11 +42,13 @@
   ],
   "url": "https://github.com/vuolter/hono-compress",
   "scripts": {
+    "update": "bun update --latest && npm install --legacy-peer-deps --no-fund --package-lock-only",
     "build": "pkgroll --clean-dist --minify",
     "test": "bun test",
     "format": "prettier . --write",
     "lint": "eslint --cache --cache-location node_modules/.cache/eslint --cache-strategy content --fix .",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "lock": "bun install --silent && npm install --legacy-peer-deps --no-audit --no-fund --package-lock-only"
   },
   "peerDependencies": {
     "hono": "^4.6.10"
