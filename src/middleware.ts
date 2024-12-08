@@ -107,7 +107,6 @@ export function compress({
   if (encoding) {
     encodings = [encoding]
   }
-  options = { ...options, level: zlibLevel }
 
   // NOTE: fail if unsupported encodings
   checkCompressEncodings(encodings)
@@ -136,7 +135,8 @@ export function compress({
     if (enc === 'zstd') {
       stream = new ZstdCompressionStream(zstdLevel)
     } else if (zlib) {
-      stream = new ZlibCompressionStream(enc, options)
+      const level = enc === 'br' ? brotliLevel : gzipLevel
+      stream = new ZlibCompressionStream(enc, { level, ...options })
     } else if (enc === 'br') {
       stream = new BrotliCompressionStream(brotliLevel)
     } else {

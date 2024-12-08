@@ -16,7 +16,7 @@ import type {
 export type CompressionEncoding = (typeof ACCEPTED_ENCODINGS)[number]
 
 export type NodeCompressionEncoding = (typeof NODE_ENCODINGS)[number]
-export type NodeCompressionOptions = BrotliOptions | ZlibOptions
+export type NodeCompressionOptions = BrotliOptions & ZlibOptions
 
 export type CompressionFilter = (c: Context) => boolean
 

@@ -35,7 +35,20 @@ export class ZlibCompressionStream {
 
     switch (encoding) {
       case 'br': {
-        handle = zlib.createBrotliCompress(options)
+        const { windowBits, level, memLevel, params, ...rest } = options ?? {}
+        const { BROTLI_PARAM_LGWIN, BROTLI_PARAM_QUALITY, BROTLI_PARAM_LGBLOCK } =
+          zlib.constants
+
+        const brotliOptions = {
+          params: {
+            ...(windowBits && { [BROTLI_PARAM_LGWIN]: windowBits }),
+            ...(level && { [BROTLI_PARAM_QUALITY]: level }),
+            ...(memLevel && { [BROTLI_PARAM_LGBLOCK]: memLevel }),
+            ...params,
+          },
+          ...rest,
+        }
+        handle = zlib.createBrotliCompress(brotliOptions)
         break
       }
       case 'deflate': {
