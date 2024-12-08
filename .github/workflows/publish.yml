@@ -23,7 +23,7 @@ jobs:
           cache: npm
           registry-url: 'https://registry.npmjs.org'
 
-      - run: npm ci --no-audit
+      - run: npm ci --no-audit --no-fund
 
       - run: npm run build
 
