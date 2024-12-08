@@ -86,7 +86,7 @@ compress({
   threshold,
   zstdLevel,
   brotliLevel,
-  zlibLevel,
+  gzipLevel,
   options,
   filter,
 })
@@ -146,11 +146,11 @@ Brotli algorithm compression level (encoding `br`).
 
 Refer to the Brotli [specification](https://www.ietf.org/rfc/rfc7932.txt) for more details.
 
-### zlibLevel
+### gzipLevel
 
 Defaults to `6`.
 
-Zlib algorithms compression level (encoding `gzip` and `deflate`).
+Gzip algorithms compression level (encoding `gzip` and `deflate`).
 
 Refer to the zlib [manual](https://zlib.net/manual.html) for more details.
 

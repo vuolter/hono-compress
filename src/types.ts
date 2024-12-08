@@ -42,9 +42,9 @@ export interface CompressOptions {
   brotliLevel?: number
 
   /**
-   * Zlib algorithms compression level
+   * Gzip algorithms compression level
    */
-  zlibLevel?: number
+  gzipLevel?: number
 
   /**
    * Options passed to the node zlib compression engine

@@ -5,8 +5,8 @@ import type { CompressionEncoding, CompressionFilter, CompressOptions } from '~/
 import {
   ACCEPTED_ENCODINGS,
   BROTLI_LEVEL,
+  GZIP_LEVEL,
   THRESHOLD_SIZE,
-  ZLIB_LEVEL,
   ZSTD_LEVEL,
 } from '~/constants'
 import {
@@ -99,7 +99,7 @@ export function compress({
   threshold = THRESHOLD_SIZE,
   zstdLevel = ZSTD_LEVEL,
   brotliLevel = BROTLI_LEVEL,
-  zlibLevel = ZLIB_LEVEL,
+  gzipLevel = GZIP_LEVEL,
   options = {},
   filter,
 }: CompressOptions = {}): MiddlewareHandler {
