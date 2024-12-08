@@ -4,10 +4,10 @@ import type { CompressionEncoding, CompressionFilter, CompressOptions } from '~/
 
 import {
   ACCEPTED_ENCODINGS,
-  BROTLI_LEVEL,
-  GZIP_LEVEL,
+  BROTLI_DEFAULT_LEVEL,
+  GZIP_DEFAULT_LEVEL,
   THRESHOLD_SIZE,
-  ZSTD_LEVEL,
+  ZSTD_DEFAULT_LEVEL,
 } from '~/constants'
 import {
   isCloudflareWorkers,
@@ -97,9 +97,9 @@ export function compress({
   encodings = [...ACCEPTED_ENCODINGS],
   force = false,
   threshold = THRESHOLD_SIZE,
-  zstdLevel = ZSTD_LEVEL,
-  brotliLevel = BROTLI_LEVEL,
-  gzipLevel = GZIP_LEVEL,
+  zstdLevel = ZSTD_DEFAULT_LEVEL,
+  brotliLevel = BROTLI_DEFAULT_LEVEL,
+  gzipLevel = GZIP_DEFAULT_LEVEL,
   options = {},
   filter,
 }: CompressOptions = {}): MiddlewareHandler {

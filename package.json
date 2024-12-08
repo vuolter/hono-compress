@@ -1,7 +1,7 @@
 {
   "name": "hono-compress",
   "type": "module",
-  "version": "0.6.1",
+  "version": "0.7.0",
   "description": "Compression plugin for Hono working with Bun",
   "author": {
     "name": "Walter Purcaro",
@@ -75,6 +75,7 @@
     "eslint-plugin-unicorn": "^56.0.1",
     "pkgroll": "^2.5.1",
     "prettier": "^4.0.0-alpha.10",
+    "type-fest": "^4.30.0",
     "typescript": "^5.7.2",
     "typescript-eslint": "^8.17.0"
   },
