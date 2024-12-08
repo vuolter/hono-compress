@@ -22,7 +22,7 @@ export default tseslint.config(
   security.configs.recommended,
   sonarjs.configs.recommended,
   prettier,
-  { ignores: ['dist'] },
+  { ignores: ['dist', 'README.md'] },
   { plugins: { tsdoc } },
   {
     rules: {
@@ -35,6 +35,7 @@ export default tseslint.config(
       'import-x/no-unresolved': 'warn',
       'no-undef': 'off',
       'perfectionist/sort-interfaces': 'off',
+      'perfectionist/sort-modules': 'off',
       'perfectionist/sort-object-types': 'off',
       'perfectionist/sort-objects': 'off',
       'tsdoc/syntax': 'warn',
