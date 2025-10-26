@@ -45,7 +45,6 @@
   ],
   "url": "https://github.com/vuolter/hono-compress",
   "scripts": {
-    "update": "bun update --latest && npm install --force --no-fund --package-lock-only",
     "build": "pkgroll --clean-dist --minify",
     "format": "prettier . --cache --write",
     "lint": "eslint --cache --cache-location node_modules/.cache/eslint --cache-strategy content --concurrency auto --fix .",
@@ -79,6 +78,7 @@
     "@rollup/rollup-linux-x64-gnu": "^4.52.5"
   },
   "trustedDependencies": [
+    "esbuild",
     "unrs-resolver"
   ]
 }

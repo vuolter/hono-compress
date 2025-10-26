@@ -32,6 +32,7 @@
     },
   },
   "trustedDependencies": [
+    "esbuild",
     "unrs-resolver",
   ],
   "packages": {
