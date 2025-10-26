@@ -7,7 +7,7 @@ on:
       - 'v*'
 
 jobs:
-  release:
+  test:
     runs-on: ubuntu-latest
 
     permissions:
@@ -15,11 +15,33 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+
+      - name: Install dependencies
+        run: bun ci
+
+      - name: Run unit tests
+        run: bun test
+
+  release:
+    needs: test
+
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
 
       - name: Publish release
-        uses: ghalactic/github-release-from-tag@v5
+        uses: ghalactic/github-release-from-tag@v6
         with:
-          generateReleaseNotes: 'true'
-          prerelease: 'false'
-          summaryEnabled: 'false'
+          generateReleaseNotes: true
+          makeLatest: semver
+          prerelease: false
+          summaryEnabled: false
