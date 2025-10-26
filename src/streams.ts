@@ -38,9 +38,9 @@ abstract class BaseCompressionStream
 
 export class BunCompressionStream extends BaseCompressionStream {
   static readonly compressor = new Map([
-    ['deflate', bun?.deflateSync ?? null],
-    ['gzip', bun?.gzipSync ?? null],
-    ['zstd', bun?.zstdCompressSync ?? null],
+    ['deflate', bun?.deflateSync],
+    ['gzip', bun?.gzipSync],
+    ['zstd', bun?.zstdCompressSync],
   ] as [string, CallableFunction][])
 
   constructor(
