@@ -1,151 +1,238 @@
 import type { Context, MiddlewareHandler } from 'hono'
 
-import type { CompressionEncoding, CompressionFilter, CompressOptions } from '~/types'
+import type {
+  BunCompressionEncoding,
+  BunCompressionOptions,
+  CompressionCallback,
+  CompressionConfig,
+  CompressionEncoding,
+  CompressionOptions,
+  CompressRules,
+  HonoCompressOptions,
+  NodeCompressionEncoding,
+  NodeCompressionOptions,
+  WebCompressionEncoding,
+} from '~/types'
 
 import {
   ACCEPTED_ENCODINGS,
   BROTLI_DEFAULT_LEVEL,
-  GZIP_DEFAULT_LEVEL,
   THRESHOLD_SIZE,
+  ZLIB_DEFAULT_LEVEL,
   ZSTD_DEFAULT_LEVEL,
 } from '~/constants'
 import {
+  hasContent,
   isCloudflareWorkers,
+  isContentCompressible,
+  isContentEncodable,
+  isContentTransformable,
   isDenoDeploy,
-  shouldCompress,
-  shouldTransform,
+  isStreaming,
 } from '~/helpers'
-import { zlib } from '~/imports'
 import {
-  BrotliCompressionStream,
-  ZlibCompressionStream,
-  ZstdCompressionStream,
+  BunCompressionStream,
+  NodeCompressionStream,
+  WebCompressionStream,
 } from '~/streams'
 
-function checkCompressEncodings(encodings: CompressionEncoding[]) {
+import { CheckFail } from './exceptions'
+
+function checkEncodings(encodings: CompressionEncoding[]) {
   const unsupportedEncoding: string | undefined = encodings.find(
     (enc) => !ACCEPTED_ENCODINGS.includes(enc),
   )
   if (unsupportedEncoding) {
-    throw new Error(`Invalid compression encoding: ${unsupportedEncoding}`)
+    throw new TypeError(`Invalid compression encoding: ${unsupportedEncoding}`)
   }
 }
 
-function checkResposeType(c: Context) {
-  // NOTE: skip no content
-  if (!c.res.body) {
-    throw Error
+function checkRuntime() {
+  // NOTE: skip runtime already compressing by default
+  if (isDenoDeploy || isCloudflareWorkers) {
+    throw CheckFail
   }
+}
 
+function checkResponse(ctx: Context, { threshold, force, strict }: CompressRules) {
   // NOTE: skip head request
-  if (c.req.method === 'HEAD') {
-    throw Error
+  if (ctx.req.method === 'HEAD') {
+    throw CheckFail
   }
-}
 
-function checkResponseCompressible(c: Context, threshold: number, force: boolean) {
   // NOTE: skip no-compression request
-  if (c.req.header('x-no-compression')) {
-    throw Error
+  if (strict && ctx.req.header('x-no-compression')) {
+    throw CheckFail
   }
 
-  // NOTE: skip already encoded
-  if (c.res.headers.has('Content-Encoding')) {
-    throw Error
+  // NOTE: skip no content or too small
+  if (!hasContent(ctx.res, threshold)) {
+    throw CheckFail
   }
 
-  const contentLength = Number(c.res.headers.get('Content-Length'))
-
-  // NOTE: skip small size content
-  if (contentLength && contentLength < threshold) {
-    throw Error
+  // NOTE: skip already encoded content
+  if (!isContentEncodable(ctx.res)) {
+    throw CheckFail
   }
 
-  // NOTE: skip un-compressible content
-  if (!shouldCompress(c.res, force)) {
-    throw Error
-  }
-
-  // NOTE: skip un-transformable content
-  if (!shouldTransform(c.res)) {
-    throw Error
-  }
-}
-
-function checkResponseFilter(c: Context, filter: CompressionFilter | null | undefined) {
-  // NOTE: skip by callback result or if an already compressing runtime
-  if (filter != null) {
-    if (!filter(c)) {
-      throw Error
+  if (!force) {
+    // NOTE: skip un-compressible content
+    if (!isContentCompressible(ctx.res)) {
+      throw CheckFail
     }
-  } else if (isDenoDeploy || isCloudflareWorkers) {
-    throw Error
+
+    // NOTE: skip un-transformable content
+    if (!isContentTransformable(ctx.res)) {
+      throw CheckFail
+    }
   }
 }
 
-function findAcceptedEncoding(c: Context, encodings: CompressionEncoding[]) {
-  const acceptedEncoding = c.req.header('Accept-Encoding')
+function checkCustomFilter(ctx: Context, cb: CompressionCallback) {
+  if (!cb(ctx)) {
+    throw CheckFail
+  }
+}
+
+function filterAcceptedEncoding(
+  ctx: Context,
+  encodings: CompressionEncoding[],
+  fallback?: CompressionEncoding,
+) {
+  const acceptedEncoding = ctx.req.header('Accept-Encoding')
 
   if (!acceptedEncoding) {
-    return
+    return fallback ? [fallback] : []
   }
-  return encodings.find((enc) => acceptedEncoding.includes(enc))
+  return encodings.filter((enc) => acceptedEncoding.includes(enc))
+}
+
+function getCompressionStream(
+  encoding: CompressionEncoding,
+  options: CompressionOptions<typeof encoding>,
+  { bun, node }: CompressRules,
+) {
+  let stream
+
+  try {
+    if (bun !== false && BunCompressionStream.canHandle(encoding)) {
+      stream = new BunCompressionStream(
+        encoding as BunCompressionEncoding,
+        options as BunCompressionOptions<typeof encoding>,
+      )
+    } else if (node !== false && NodeCompressionStream.canHandle(encoding)) {
+      stream = new NodeCompressionStream(
+        encoding as NodeCompressionEncoding,
+        options as NodeCompressionOptions<typeof encoding>,
+      )
+    } else if (WebCompressionStream.canHandle(encoding)) {
+      stream = new WebCompressionStream(encoding as WebCompressionEncoding)
+    }
+  } catch (error) {
+    if (error instanceof TypeError) {
+      console.warn(error.message)
+    } else {
+      throw error
+    }
+  }
+
+  return stream
+}
+
+function canCompress(ctx: Context, { filter, ...options }: CompressRules) {
+  try {
+    if (filter) {
+      checkCustomFilter(ctx, filter)
+    } else {
+      checkRuntime()
+      checkResponse(ctx, options)
+    }
+  } catch (error) {
+    if (error == CheckFail) {
+      return false
+    } else {
+      throw error
+    }
+  }
+
+  return true
+}
+
+async function handleCompress(
+  ctx: Context,
+  encodings: CompressionEncoding[],
+  config: Map<string, CompressionConfig>,
+  { stream, ...rules }: CompressRules,
+) {
+  for (const enc of encodings) {
+    const [level, options] = config.get(enc) ?? []
+    const cs = getCompressionStream(enc, { level, ...options }, rules)
+
+    if (!cs) {
+      continue
+    }
+    if (stream === undefined) {
+      stream = isStreaming(ctx.res)
+    }
+
+    const body = ctx.res.body!.pipeThrough(cs)
+
+    if (stream) {
+      ctx.res = new Response(body, ctx.res)
+      ctx.res.headers.delete('Content-Length')
+    } else {
+      const promise = 'bytes' in body ? body.bytes() : new Response(body).arrayBuffer()
+      const buffer = await promise
+      ctx.res = new Response(buffer, ctx.res)
+      ctx.res.headers.set('Content-Length', buffer.byteLength.toString())
+    }
+    ctx.res.headers.set('Content-Encoding', enc)
+    break
+  }
 }
 
 export function compress({
   encoding,
   encodings = [...ACCEPTED_ENCODINGS],
+  fallback,
   force = false,
+  strict = true,
+  stream = true,
+  bun = true,
+  node = true,
   threshold = THRESHOLD_SIZE,
   zstdLevel = ZSTD_DEFAULT_LEVEL,
   brotliLevel = BROTLI_DEFAULT_LEVEL,
-  gzipLevel = GZIP_DEFAULT_LEVEL,
-  options = {},
+  gzipLevel = ZLIB_DEFAULT_LEVEL,
+  deflateLevel = ZLIB_DEFAULT_LEVEL,
+  zstdOptions,
+  brotliOptions,
+  gzipOptions,
+  deflateOptions,
   filter,
-}: CompressOptions = {}): MiddlewareHandler {
-  // NOTE: use `encoding` as the only compression scheme
+}: HonoCompressOptions = {}): MiddlewareHandler {
   if (encoding) {
     encodings = [encoding]
   }
 
-  // NOTE: fail if unsupported encodings
-  checkCompressEncodings(encodings)
+  checkEncodings(encodings)
 
-  return async function compress(c, next) {
+  const rules = { filter, threshold, force, strict, stream, bun, node }
+  const config: Map<string, CompressionConfig> = new Map([
+    ['br', [brotliLevel, brotliOptions]],
+    ['deflate', [deflateLevel, deflateOptions]],
+    ['gzip', [gzipLevel, gzipOptions]],
+    ['zstd', [zstdLevel, zstdOptions]],
+  ])
+
+  return async function compress(ctx, next) {
     await next()
 
-    // NOTE: skip if checks failed
-    try {
-      checkResposeType(c)
-      checkResponseCompressible(c, threshold, force)
-      checkResponseFilter(c, filter)
-    } catch {
-      return
+    if (canCompress(ctx, rules)) {
+      const ae = filterAcceptedEncoding(ctx, encodings, fallback)
+      if (ae.length > 0) {
+        await handleCompress(ctx, ae, config, rules)
+      }
     }
-
-    const enc = findAcceptedEncoding(c, encodings) ?? (force && encodings[0])
-
-    // NOTE: skip if no accepted encoding
-    if (!enc) {
-      return
-    }
-
-    let stream
-
-    if (enc === 'zstd') {
-      stream = new ZstdCompressionStream(zstdLevel)
-    } else if (zlib) {
-      const level = enc === 'br' ? brotliLevel : gzipLevel
-      stream = new ZlibCompressionStream(enc, { level, ...options })
-    } else if (enc === 'br') {
-      stream = new BrotliCompressionStream(brotliLevel)
-    } else {
-      stream = new CompressionStream(enc)
-    }
-
-    c.res = new Response(c.res.body!.pipeThrough(stream), c.res)
-
-    c.res.headers.delete('Content-Length')
-    c.res.headers.set('Content-Encoding', enc)
   }
 }
