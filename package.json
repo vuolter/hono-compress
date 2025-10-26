@@ -14,7 +14,10 @@
   },
   "keywords": [
     "hono",
+    "hono compress",
+    "bun compress",
     "compression",
+    "compress",
     "node",
     "deno",
     "bun",
@@ -44,11 +47,10 @@
   "scripts": {
     "update": "bun update --latest && npm install --force --no-fund --package-lock-only",
     "build": "pkgroll --clean-dist --minify",
-    "test": "bun test",
-    "format": "prettier . --write",
-    "lint": "eslint --cache --cache-location node_modules/.cache/eslint --cache-strategy content --fix .",
+    "format": "prettier . --cache --write",
+    "lint": "eslint --cache --cache-location node_modules/.cache/eslint --cache-strategy content --concurrency auto --fix .",
     "typecheck": "tsc --noEmit",
-    "lock": "bun install --silent && npm install --force --no-audit --no-fund --package-lock-only"
+    "postinstall": "npm install --force --ignore-scripts --no-audit --no-fund --package-lock-only"
   },
   "peerDependencies": {
     "hono": "^4.10.3",
