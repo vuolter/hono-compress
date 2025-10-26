@@ -272,19 +272,19 @@ compress({
 ### Constants
 
 ```typescript
-export const ACCEPTED_ENCODINGS = ['zstd', 'br', 'gzip', 'deflate'] as const
+const ACCEPTED_ENCODINGS = ['zstd', 'br', 'gzip', 'deflate'] as const
 
-export const ZSTD_DEFAULT_LEVEL = 2
-export const ZSTD_MIN_LEVEL = 1
-export const ZSTD_MAX_LEVEL = 22
+const ZSTD_DEFAULT_LEVEL = 2
+const ZSTD_MIN_LEVEL = 1
+const ZSTD_MAX_LEVEL = 22
 
-export const BROTLI_DEFAULT_LEVEL = 4
-export const BROTLI_MIN_LEVEL = 0
-export const BROTLI_MAX_LEVEL = 11
+const BROTLI_DEFAULT_LEVEL = 4
+const BROTLI_MIN_LEVEL = 0
+const BROTLI_MAX_LEVEL = 11
 
-export const ZLIB_DEFAULT_LEVEL = 6
-export const ZLIB_MIN_LEVEL = 0
-export const ZLIB_MAX_LEVEL = 9
+const ZLIB_DEFAULT_LEVEL = 6
+const ZLIB_MIN_LEVEL = 0
+const ZLIB_MAX_LEVEL = 9
 ```
 
 ### Types
