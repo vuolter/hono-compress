@@ -50,7 +50,7 @@ export class BunCompressionStream extends BaseCompressionStream {
     const compress = BunCompressionStream.compressor.get(encoding)!
     const transformer: Transformer = {
       transform(chunk, controller) {
-        controller.enqueue(compress(chunk, options as any))
+        controller.enqueue(compress(chunk, options))
       },
     }
     super(encoding, options, transformer)
