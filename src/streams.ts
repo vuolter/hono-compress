@@ -2,6 +2,7 @@ import type {
   BunCompressionEncoding,
   BunCompressionOptions,
   CompressionEncoding,
+  HonoCompressionStream,
   NodeCompressionEncoding,
   NodeCompressionOptions,
   WebCompressionEncoding,
@@ -11,11 +12,6 @@ import { bun, stream, zlib } from '~/imports'
 
 import { BUN_ENCODINGS, WEB_ENCODINGS, ZLIB_ENCODINGS } from './constants'
 import { isBunRuntime } from './helpers'
-
-interface HonoCompressionStream {
-  encoding: Readonly<CompressionEncoding>
-  options?: Readonly<object>
-}
 
 abstract class BaseCompressionStream
   extends TransformStream

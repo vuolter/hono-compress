@@ -200,3 +200,8 @@ export interface CompressRules {
   threshold?: number
   filter?: CompressionCallback
 }
+
+export interface HonoCompressionStream {
+  encoding: Readonly<CompressionEncoding>
+  options?: Readonly<object>
+}
