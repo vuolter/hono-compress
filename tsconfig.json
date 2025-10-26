@@ -6,7 +6,7 @@
     "noPropertyAccessFromIndexSignature": true,
     "noUncheckedIndexedAccess": true,
     "noUnusedLocals": true,
-    "noUnusedParameters": true,
+    "noUnusedParameters": false,
     "strict": true,
 
     // Modules
@@ -21,15 +21,14 @@
 
     // Emit
     "noEmit": true,
+
     "removeComments": true,
 
     // JavaScript Support
-    "allowJs": false,
+    "allowJs": true,
 
     // Interop Constraints
     "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-    "isolatedModules": true,
     "verbatimModuleSyntax": true,
 
     // Language and Environment
@@ -39,7 +38,6 @@
     "lib": ["ESNext"],
     "moduleDetection": "force",
     "target": "esnext",
-    "useDefineForClassFields": true,
 
     // Projects
     "composite": true,
