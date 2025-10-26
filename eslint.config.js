@@ -1,6 +1,7 @@
 import eslint from '@eslint/js'
 import prettier from 'eslint-config-prettier'
-import importX from 'eslint-plugin-import-x'
+import { createTypeScriptImportResolver } from 'eslint-import-resolver-typescript'
+import { importX } from 'eslint-plugin-import-x'
 import markdown from 'eslint-plugin-markdown'
 import perfectionist from 'eslint-plugin-perfectionist'
 import regexp from 'eslint-plugin-regexp'
@@ -8,13 +9,14 @@ import security from 'eslint-plugin-security'
 import sonarjs from 'eslint-plugin-sonarjs'
 import tsdoc from 'eslint-plugin-tsdoc'
 import unicorn from 'eslint-plugin-unicorn'
+import { defineConfig } from 'eslint/config'
 import tseslint from 'typescript-eslint'
 
-export default tseslint.config(
+export default defineConfig(
   eslint.configs.recommended,
-  ...tseslint.configs.recommended,
-  ...markdown.configs.recommended,
-  unicorn.configs['flat/recommended'],
+  tseslint.configs.recommended,
+  markdown.configs.recommended,
+  unicorn.configs.recommended,
   regexp.configs['flat/recommended'],
   importX.flatConfigs.recommended,
   importX.flatConfigs.typescript,
@@ -47,6 +49,10 @@ export default tseslint.config(
     },
   },
   {
-    settings: { 'import-x/resolver': { typescript: true } },
+    settings: {
+      'import-x/resolver-next': [
+        createTypeScriptImportResolver({ alwaysTryTypes: true, bun: true }),
+      ],
+    },
   },
 )
