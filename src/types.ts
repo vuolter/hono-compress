@@ -128,7 +128,7 @@ export interface HonoCompressOptions {
   /**
    * Enables to always streaming compressed response content
    */
-  stream?: boolean
+  streaming?: boolean
 
   /**
    * Allows Bun compressor to be used
@@ -194,7 +194,7 @@ export interface HonoCompressOptions {
 export interface CompressRules {
   force?: boolean
   strict?: boolean
-  stream?: boolean
+  streaming?: boolean
   bun?: boolean
   node?: boolean
   threshold?: number

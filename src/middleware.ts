@@ -162,7 +162,7 @@ async function handleCompress(
   ctx: Context,
   encodings: CompressionEncoding[],
   config: Map<string, CompressionConfig>,
-  { stream, ...rules }: CompressRules,
+  { streaming, ...rules }: CompressRules,
 ) {
   for (const enc of encodings) {
     const [level, options] = config.get(enc) ?? []
@@ -171,13 +171,13 @@ async function handleCompress(
     if (!cs) {
       continue
     }
-    if (stream === undefined) {
-      stream = isStreaming(ctx.res)
+    if (streaming === undefined) {
+      streaming = isStreaming(ctx.res)
     }
 
     const body = ctx.res.body!.pipeThrough(cs)
 
-    if (stream) {
+    if (streaming) {
       ctx.res = new Response(body, ctx.res)
       ctx.res.headers.delete('Content-Length')
     } else {
@@ -197,7 +197,7 @@ export function compress({
   fallback,
   force = false,
   strict = true,
-  stream = true,
+  streaming = true,
   bun = true,
   node = true,
   threshold = THRESHOLD_SIZE,
@@ -217,7 +217,7 @@ export function compress({
 
   checkEncodings(encodings)
 
-  const rules = { filter, threshold, force, strict, stream, bun, node }
+  const rules = { filter, threshold, force, strict, streaming, bun, node }
   const config: Map<string, CompressionConfig> = new Map([
     ['br', [brotliLevel, brotliOptions]],
     ['deflate', [deflateLevel, deflateOptions]],

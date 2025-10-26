@@ -70,7 +70,7 @@ describe.concurrent.each([...ACCEPTED_ENCODINGS])('%s', (enc) => {
 
   test('forced image compression (without streaming)', async () => {
     const app = new Hono()
-      .use(compress({ force: true, stream: false }))
+      .use(compress({ force: true, streaming: false }))
       .get('/', serveStatic({ path: './tests/mei.jpg' }))
     const res = await app.request(createRequestFor(enc))
 
