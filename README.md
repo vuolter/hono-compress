@@ -96,7 +96,7 @@ compress({
   fallback,
   force,
   strict,
-  stream,
+  streaming,
   bun,
   node,
   threshold,
@@ -136,48 +136,48 @@ Defaults to `['zstd', 'br', 'gzip', 'deflate']`.
 
 The encoding formats allowed to be used to compress the response content.
 
-The first matching the request accept-encoding according their order of declaration is chosen to compress the response content.
+The first matching the request `Accept-Encoding` header according their order of declaration is chosen to compress the response content.
 
 ### _(optional)_ fallback: `zstd` | `br` | `gzip` | `deflate`
 
 Defaults to `undefined`.
 
-The encoding format to be used as fallback to compress the response content if no accept-encoding header is request by the client.
+The encoding format to be used as fallback to compress the response content if no `Accept-Encoding` header is request by the client.
 If not defined, content will not be compressed.
 
 ### _(optional)_ force: `boolean`
 
 Defaults to `false`.
 
-Forces the content compression even if the response content-type cannot be determined and the cache-control is set to no-transform.
+Forces the content compression even if the response `Content-Type` header cannot be determined and the `Cache-Control` is set to `no-transform`.
 
 ### _(optional)_ strict: `boolean`
 
 Defaults to `true`.
 
 Complies with the client request directives.
-Disables the content compression if find the `x-no-compression` header.
+Disables the content compression if match the `x-no-compression` header.
 
-### _(optional)_ stream: `boolean`
+### _(optional)_ streaming: `boolean`
 
 Defaults to `true`.
 
 Streams compressed content in chunked response.
 
 Can be set to `undefined` to automatically detect when disable streaming compression.
-Always enabled by default to increase performances.
+Enabled by default to always streaming content.
 
 ### _(optional)_ bun: `boolean`
 
 Defaults to `true`.
 
-Allows Bun stream compressor to be used.
+Allows Bun stream compressor to be used if available.
 
 ### _(optional)_ node: `boolean`
 
 Defaults to `true`.
 
-Allows Node stream compressor to be used.
+Allows Node stream compressor to be used if available.
 
 ### _(optional)_ threshold: `number`
 
@@ -257,7 +257,9 @@ Overrides all the internal checks. Use with caution.
 
 Boolean
 
-**Example** of forcing the response content to be always compressed:
+#### Example
+
+Force the response content to be always compressed:
 
 ```typescript
 import type { Context } from 'hono'
@@ -307,7 +309,7 @@ interface HonoCompressOptions {
   fallback?: CompressionEncoding
   force?: boolean
   strict?: boolean
-  stream?: boolean
+  streaming?: boolean
   bun?: boolean
   node?: boolean
   threshold?: number
