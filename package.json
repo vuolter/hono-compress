@@ -70,6 +70,7 @@
     "eslint-plugin-sonarjs": "^3.0.5",
     "eslint-plugin-tsdoc": "^0.4.0",
     "eslint-plugin-unicorn": "^62.0.0",
+    "globals": "^16.4.0",
     "pkgroll": "^2.20.1",
     "prettier": "^4.0.0-alpha.12",
     "typescript-eslint": "^8.46.2"
