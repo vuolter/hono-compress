@@ -15,5 +15,6 @@
     "json",
     "jsonc"
   ],
+  "npm.packageManager": "bun",
   "typescript.tsdk": "node_modules/typescript/lib"
 }
