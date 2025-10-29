@@ -1,0 +1,5 @@
+telemetry = false
+# logLevel = "debug"
+
+[install.security]
+scanner = "@socketsecurity/bun-security-scanner"
