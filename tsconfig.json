@@ -4,6 +4,7 @@
     "noFallthroughCasesInSwitch": true,
     "noImplicitOverride": true,
     "noPropertyAccessFromIndexSignature": true,
+    "noUncheckedSideEffectImports": true,
     "noUncheckedIndexedAccess": true,
     "noUnusedLocals": true,
     "noUnusedParameters": false,
@@ -21,14 +22,13 @@
 
     // Emit
     "noEmit": true,
-
     "removeComments": true,
 
     // JavaScript Support
-    "allowJs": true,
+    "allowJs": false,
 
     // Interop Constraints
-    "esModuleInterop": true,
+    "erasableSyntaxOnly": true,
     "verbatimModuleSyntax": true,
 
     // Language and Environment
@@ -38,12 +38,14 @@
     "lib": ["ESNext"],
     "moduleDetection": "force",
     "target": "esnext",
+    "useDefineForClassFields": true,
 
     // Projects
     "composite": true,
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
 
     // Completeness
     "skipLibCheck": true
   },
-  "include": ["./**/*", "./src/**/*"]
+  "include": ["src", "tests"]
 }
