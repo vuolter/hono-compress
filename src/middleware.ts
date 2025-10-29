@@ -181,8 +181,7 @@ async function handleCompress(
       ctx.res = new Response(body, ctx.res)
       ctx.res.headers.delete('Content-Length')
     } else {
-      const promise = 'bytes' in body ? body.bytes() : new Response(body).arrayBuffer()
-      const buffer = await promise
+      const buffer = await new Response(body).arrayBuffer()
       ctx.res = new Response(buffer, ctx.res)
       ctx.res.headers.set('Content-Length', buffer.byteLength.toString())
     }

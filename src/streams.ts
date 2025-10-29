@@ -126,13 +126,13 @@ export class NodeCompressionStream extends BaseCompressionStream {
 
     const { readable, writable } = stream.Duplex.toWeb(handle)
 
-    this.readable = readable
+    this.readable = readable as unknown as ReadableStream
     this.writable = writable
   }
 
   static override canHandle(encoding: CompressionEncoding): boolean {
     return (
-      zlib !== undefined && (ZLIB_ENCODINGS as ReadonlyArray<string>).includes(encoding)
+      zlib != undefined && (ZLIB_ENCODINGS as ReadonlyArray<string>).includes(encoding)
     )
   }
 }

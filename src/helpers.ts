@@ -7,7 +7,7 @@ import {
 
 import { bun } from './imports'
 
-export const isBunRuntime = bun !== undefined
+export const isBunRuntime = bun != undefined
 
 export const isCloudflareWorkers =
   globalThis.navigator?.userAgent === CLOUDFLARE_WORKERS_NAVIGATOR
@@ -17,7 +17,7 @@ export const isDenoDeploy =
 
 export function isContentCompressible(res: Response) {
   const contentType = res.headers.get('Content-Type')
-  return contentType && COMPRESSIBLE_CONTENT_TYPE_REGEX.test(contentType)
+  return !!contentType && COMPRESSIBLE_CONTENT_TYPE_REGEX.test(contentType)
 }
 
 export function isContentTransformable(res: Response) {
