@@ -49,6 +49,8 @@
     "format": "prettier . --cache --write",
     "lint": "eslint --cache --cache-location node_modules/.cache/eslint --cache-strategy content --concurrency auto --fix .",
     "typecheck": "tsc --noEmit",
+    "gendocs": "typedoc --theme fresh",
+    "genwiki": "typedoc --plugin typedoc-plugin-markdown --out ./wiki",
     "postinstall": "npm install --force --ignore-scripts --no-audit --no-fund --package-lock-only"
   },
   "peerDependencies": {
@@ -74,6 +76,9 @@
     "globals": "^16.4.0",
     "pkgroll": "^2.20.1",
     "prettier": "^4.0.0-alpha.12",
+    "typedoc": "^0.28.14",
+    "typedoc-plugin-markdown": "^4.9.0",
+    "typedoc-theme-fresh": "^0.2.1",
     "typescript-eslint": "^8.46.2"
   },
   "optionalDependencies": {
