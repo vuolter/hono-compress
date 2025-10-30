@@ -49,8 +49,7 @@
     "format": "prettier . --cache --write",
     "lint": "eslint --cache --cache-location node_modules/.cache/eslint --cache-strategy content --concurrency auto --fix .",
     "typecheck": "tsgo",
-    "gendocs": "typedoc --theme fresh",
-    "genwiki": "typedoc --plugin typedoc-plugin-markdown --out ./wiki",
+    "gendocs": "typedoc",
     "postinstall": "npm install --force --ignore-scripts --no-audit --no-fund --package-lock-only"
   },
   "peerDependencies": {
