@@ -49,8 +49,8 @@
     "format": "prettier . --cache --write",
     "lint": "eslint --cache --cache-location node_modules/.cache/eslint --cache-strategy content --concurrency auto --fix .",
     "typecheck": "tsgo",
-    "gendocs": "typedoc",
-    "postinstall": "npm install --force --ignore-scripts --no-audit --no-fund --package-lock-only"
+    "gendocs": "typedoc && prettier ./docs --cache --write --log-level silent",
+    "postinstall": "npm install --force --ignore-scripts --package-lock-only --silent"
   },
   "peerDependencies": {
     "hono": "^4.10.3"
