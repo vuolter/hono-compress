@@ -1,4 +1,4 @@
-name: Run unit tests with Bun
+name: Run unit tests
 
 on:
   push:

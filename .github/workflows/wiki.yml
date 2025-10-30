@@ -26,7 +26,7 @@ jobs:
         run: bun ci
 
       - name: Generate docs
-        run: bun genwiki
+        run: bun gendocs
 
       - name: Publish wiki
         uses: Andrew-Chen-Wang/github-wiki-action@v5
