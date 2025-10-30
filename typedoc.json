@@ -1,7 +1,6 @@
 {
   "entryPoints": ["./src/index.ts"],
   "sort": ["kind", "instance-first"],
-  "router": "kind",
   "cleanOutputDir": true,
   "plugin": ["typedoc-plugin-markdown", "typedoc-theme-fresh"],
   "outputs": [
@@ -21,19 +20,21 @@
       "name": "markdown",
       "path": "./wiki",
       "options": {
-        "classPropertiesFormat": "table",
-        "enumMembersFormat": "table",
+        "classPropertiesFormat": "htmlTable",
+        "enumMembersFormat": "htmlTable",
+        "expandObjects": true,
+        "expandParameters": true,
+        "flattenOutputFiles": true,
         "formatWithPrettier": true,
         "hidePageHeader": true,
-        "indexFormat": "table",
-        "interfacePropertiesFormat": "table",
+        "interfacePropertiesFormat": "htmlTable",
         "mergeReadme": true,
         "out": "wiki",
-        "parametersFormat": "table",
-        "propertyMembersFormat": "table",
+        "parametersFormat": "htmlTable",
+        "propertyMembersFormat": "htmlTable",
         "theme": "markdown",
-        "typeAliasPropertiesFormat": "table",
-        "typeDeclarationFormat": "table",
+        "typeAliasPropertiesFormat": "htmlTable",
+        "typeDeclarationFormat": "htmlTable",
         "useCodeBlocks": true
       }
     }
