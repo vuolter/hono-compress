@@ -31,7 +31,6 @@
         "out": "wiki",
         "parametersFormat": "table",
         "propertyMembersFormat": "table",
-        "publicPath": "https://github.com/vuolter/hono-compress/wiki",
         "theme": "markdown",
         "typeAliasPropertiesFormat": "table",
         "typeDeclarationFormat": "table",

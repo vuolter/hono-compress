@@ -30,3 +30,6 @@ jobs:
 
       - name: Publish wiki
         uses: Andrew-Chen-Wang/github-wiki-action@v5
+        with:
+          disable-empty-commits: true
+          strategy: init
