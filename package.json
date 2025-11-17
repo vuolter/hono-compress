@@ -46,10 +46,10 @@
   "url": "https://github.com/vuolter/hono-compress",
   "scripts": {
     "build": "bun typecheck && pkgroll --clean-dist --minify",
-    "format": "prettier . --cache --write",
-    "lint": "eslint --cache --cache-location node_modules/.cache/eslint --cache-strategy content --concurrency auto --fix .",
+    "format": "prettier . --cache --experimental-cli --write",
+    "lint": "eslint --cache --cache-location ./node_modules/.cache/eslint --cache-strategy content --concurrency auto --fix .",
     "typecheck": "tsgo",
-    "gendocs": "typedoc && prettier ./docs --cache --write --log-level silent",
+    "gendocs": "typedoc && prettier ./docs --cache --experimental-cli --log-level silent --write",
     "postinstall": "npm install --force --ignore-scripts --package-lock-only --silent"
   },
   "peerDependencies": {

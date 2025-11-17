@@ -14,7 +14,7 @@ import tseslint from 'typescript-eslint'
 import globals from 'globals'
 
 export default defineConfig([
-  globalIgnores(['.vscode']),
+  globalIgnores(['docs']),
   {
     files: ['**/*.{ts,tsx}'],
     plugins: { tsdoc },
@@ -28,12 +28,13 @@ export default defineConfig([
       perfectionist.configs['recommended-natural'],
       security.configs.recommended,
       sonarjs.configs.recommended,
+      prettier,
     ],
     languageOptions: {
       globals: globals.builtin,
       parser: tseslint.parser,
       parserOptions: {
-        projectService: true,
+        projectService: { allowDefaultProject: ['tests/index.test.ts'] },
         tsconfigRootDir: import.meta.dirname,
       },
     },
@@ -66,8 +67,5 @@ export default defineConfig([
   // {
   //   files: ['**/*.md'],
   //   extends: [markdown.configs.recommended],
-  // },
-  {
-    extends: [prettier],
-  },
+  // }
 ])
