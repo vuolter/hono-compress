@@ -8,10 +8,9 @@ import type {
   WebCompressionEncoding,
 } from '~/types'
 
+import { BUN_ENCODINGS, WEB_ENCODINGS, ZLIB_ENCODINGS } from '~/constants'
+import { isBunRuntime } from '~/helpers'
 import { bun, stream, zlib } from '~/imports'
-
-import { BUN_ENCODINGS, WEB_ENCODINGS, ZLIB_ENCODINGS } from './constants'
-import { isBunRuntime } from './helpers'
 
 abstract class BaseCompressionStream
   extends TransformStream

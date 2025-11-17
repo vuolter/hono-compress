@@ -21,6 +21,7 @@ import {
   ZLIB_DEFAULT_LEVEL,
   ZSTD_DEFAULT_LEVEL,
 } from '~/constants'
+import { CheckFail } from '~/exceptions'
 import {
   hasContent,
   isCloudflareWorkers,
@@ -35,8 +36,6 @@ import {
   NodeCompressionStream,
   WebCompressionStream,
 } from '~/streams'
-
-import { CheckFail } from './exceptions'
 
 function checkEncodings(encodings: CompressionEncoding[]) {
   const unsupportedEncoding: string | undefined = encodings.find(

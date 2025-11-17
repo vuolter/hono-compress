@@ -4,8 +4,7 @@ import {
   COMPRESSIBLE_CONTENT_TYPE_REGEX,
   TRANSFERENCODING_NOCOMPRESS_REGEX,
 } from '~/constants'
-
-import { bun } from './imports'
+import { bun } from '~/imports'
 
 export const isBunRuntime = bun != undefined
 
