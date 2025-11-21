@@ -37,7 +37,7 @@ abstract class BaseCompressionStream
 export class BunCompressionStream extends BaseCompressionStream {
   static readonly acceptedEncoding: ReadonlySet<string> = new Set(BUN_ENCODINGS)
 
-  static readonly compressor = new Map([
+  static readonly compressor: Map<string, CallableFunction> = new Map([
     ['deflate', bun?.deflateSync],
     ['gzip', bun?.gzipSync],
     ['zstd', bun?.zstdCompressSync],

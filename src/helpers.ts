@@ -6,31 +6,31 @@ import {
 } from '~/constants'
 import { bun } from '~/imports'
 
-export const isBunRuntime = bun != undefined
+export const isBunRuntime: boolean = bun != undefined
 
-export const isCloudflareWorkers =
+export const isCloudflareWorkers: boolean =
   globalThis.navigator?.userAgent === CLOUDFLARE_WORKERS_NAVIGATOR
 
-export const isDenoDeploy =
+export const isDenoDeploy: boolean =
   (
     globalThis as typeof globalThis & {
       Deno?: { env: { get: (key: string) => string | undefined } }
     }
   ).Deno?.env?.get('DENO_DEPLOYMENT_ID') !== undefined
 
-export function isContentCompressible(res: Response) {
+export function isContentCompressible(res: Response): boolean {
   const contentType = res.headers.get('Content-Type')
   return !!contentType && COMPRESSIBLE_CONTENT_TYPE_REGEX.test(contentType)
 }
 
-export function isContentTransformable(res: Response) {
+export function isContentTransformable(res: Response): boolean {
   const cacheControl = res.headers.get('Cache-Control')
   // Don't compress for Cache-Control: no-transform
   // https://tools.ietf.org/html/rfc7234#section-5.2.2.4
   return !cacheControl || !CACHECONTROL_NOTRANSFORM_REGEX.test(cacheControl)
 }
 
-export function isContentEncodable(res: Response) {
+export function isContentEncodable(res: Response): boolean {
   const contentEncoding = res.headers.get('Content-Encoding')
   const transferEncoding = res.headers.get('Transfer-Encoding')
   return (
@@ -50,7 +50,7 @@ export function hasContent(res: Response, threshold?: number): boolean {
   return Number(contentLength) >= threshold
 }
 
-export function isStreaming(res: Response) {
+export function isStreaming(res: Response): boolean {
   const transferEncoding = res.headers.get('Transfer-Encoding')
-  return transferEncoding?.includes('chunked')
+  return transferEncoding?.includes('chunked') ?? false
 }

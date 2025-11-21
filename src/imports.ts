@@ -1,6 +1,8 @@
-const bunPromise = import('bun')
-const streamPromise = import('node:stream')
-const zlibPromise = import('node:zlib')
+const bunPromise: Promise<typeof import('bun')> = import('bun')
+const streamPromise: Promise<typeof import('node:stream')> = import(
+  'node:stream'
+) as unknown as Promise<typeof import('node:stream')>
+const zlibPromise: Promise<typeof import('node:zlib')> = import('node:zlib')
 
 export let bun: Awaited<typeof bunPromise>
 export let stream: Awaited<typeof streamPromise>
