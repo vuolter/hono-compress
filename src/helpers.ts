@@ -12,7 +12,11 @@ export const isCloudflareWorkers =
   globalThis.navigator?.userAgent === CLOUDFLARE_WORKERS_NAVIGATOR
 
 export const isDenoDeploy =
-  (globalThis as any).Deno?.env?.get('DENO_DEPLOYMENT_ID') !== undefined
+  (
+    globalThis as typeof globalThis & {
+      Deno?: { env: { get: (key: string) => string | undefined } }
+    }
+  ).Deno?.env?.get('DENO_DEPLOYMENT_ID') !== undefined
 
 export function isContentCompressible(res: Response) {
   const contentType = res.headers.get('Content-Type')
@@ -35,11 +39,15 @@ export function isContentEncodable(res: Response) {
   )
 }
 
-export function hasContent(res: Response, threshold?: number) {
+export function hasContent(res: Response, threshold?: number): boolean {
   const contentLength = res.headers.get('Content-Length')
-  return (
-    res.body && (!contentLength || !threshold || Number(contentLength) >= threshold)
-  )
+  if (!res.body) {
+    return false
+  }
+  if (!contentLength || !threshold) {
+    return true
+  }
+  return Number(contentLength) >= threshold
 }
 
 export function isStreaming(res: Response) {
