@@ -521,7 +521,12 @@
             <li>🎯 customizable compression level and options</li>
             <li>🎱 content size threshold and custom filtering</li>
             <li>🔒 double-compression protection</li>
-            <li>🔥 fully documented and tested</li>
+            <li>
+              🔥
+              <a href="https://github.com/vuolter/hono-compress/wiki"
+                >fully documented and tested</a
+              >
+            </li>
             <li>
               ☕ works flawlessy on <a href="https://nodejs.org/">Node</a>,
               <a href="https://deno.com/">Deno</a>,
@@ -915,33 +920,6 @@
           <p>Force the response content to be always compressed:</p>
           <pre><code class="typescript"><span class="hl-3">import</span><span class="hl-1"> </span><span class="hl-3">type</span><span class="hl-1"> { </span><span class="hl-4">Context</span><span class="hl-1"> } </span><span class="hl-3">from</span><span class="hl-1"> </span><span class="hl-2">&#39;hono&#39;</span><br/><br/><span class="hl-0">compress</span><span class="hl-1">({</span><br/><span class="hl-1">  </span><span class="hl-0">filter</span><span class="hl-4">:</span><span class="hl-1"> (</span><span class="hl-4">c</span><span class="hl-1">: </span><span class="hl-7">Context</span><span class="hl-1">) </span><span class="hl-5">=&gt;</span><span class="hl-1"> </span><span class="hl-5">true</span><span class="hl-1">,</span><br/><span class="hl-1">})</span>
 </code><button type="button">Copy</button></pre>
-
-          <h2 id="api-reference" class="tsd-anchor-link">
-            API Reference<a
-              href="#api-reference"
-              aria-label="Permalink"
-              class="tsd-anchor-icon"
-              ><svg viewBox="0 0 24 24" aria-hidden="true">
-                <use href="assets/icons.svg#icon-anchor"></use></svg
-            ></a>
-          </h2>
-          <h3 id="constants" class="tsd-anchor-link">
-            Constants<a href="#constants" aria-label="Permalink" class="tsd-anchor-icon"
-              ><svg viewBox="0 0 24 24" aria-hidden="true">
-                <use href="assets/icons.svg#icon-anchor"></use></svg
-            ></a>
-          </h3>
-          <pre><code class="typescript"><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">ACCEPTED_ENCODINGS</span><span class="hl-1"> = [</span><span class="hl-2">&#39;zstd&#39;</span><span class="hl-1">, </span><span class="hl-2">&#39;br&#39;</span><span class="hl-1">, </span><span class="hl-2">&#39;gzip&#39;</span><span class="hl-1">, </span><span class="hl-2">&#39;deflate&#39;</span><span class="hl-1">] </span><span class="hl-3">as</span><span class="hl-1"> </span><span class="hl-5">const</span><br/><br/><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">ZSTD_DEFAULT_LEVEL</span><span class="hl-1"> = </span><span class="hl-8">2</span><br/><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">ZSTD_MIN_LEVEL</span><span class="hl-1"> = </span><span class="hl-8">1</span><br/><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">ZSTD_MAX_LEVEL</span><span class="hl-1"> = </span><span class="hl-8">22</span><br/><br/><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">BROTLI_DEFAULT_LEVEL</span><span class="hl-1"> = </span><span class="hl-8">4</span><br/><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">BROTLI_MIN_LEVEL</span><span class="hl-1"> = </span><span class="hl-8">0</span><br/><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">BROTLI_MAX_LEVEL</span><span class="hl-1"> = </span><span class="hl-8">11</span><br/><br/><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">ZLIB_DEFAULT_LEVEL</span><span class="hl-1"> = </span><span class="hl-8">6</span><br/><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">ZLIB_MIN_LEVEL</span><span class="hl-1"> = </span><span class="hl-8">0</span><br/><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">ZLIB_MAX_LEVEL</span><span class="hl-1"> = </span><span class="hl-8">9</span>
-</code><button type="button">Copy</button></pre>
-
-          <h3 id="types" class="tsd-anchor-link">
-            Types<a href="#types" aria-label="Permalink" class="tsd-anchor-icon"
-              ><svg viewBox="0 0 24 24" aria-hidden="true">
-                <use href="assets/icons.svg#icon-anchor"></use></svg
-            ></a>
-          </h3>
-          <pre><code class="typescript"><span class="hl-5">type</span><span class="hl-1"> </span><span class="hl-7">ZstdLevel</span><span class="hl-1"> = </span><span class="hl-7">IntClosedRange</span><span class="hl-1">&lt;</span><span class="hl-5">typeof</span><span class="hl-1"> </span><span class="hl-6">ZSTD_MIN_LEVEL</span><span class="hl-1">, </span><span class="hl-5">typeof</span><span class="hl-1"> </span><span class="hl-6">ZSTD_MAX_LEVEL</span><span class="hl-1">&gt;</span><br/><span class="hl-5">type</span><span class="hl-1"> </span><span class="hl-7">BrotliLevel</span><span class="hl-1"> = </span><span class="hl-7">IntClosedRange</span><span class="hl-1">&lt;</span><span class="hl-5">typeof</span><span class="hl-1"> </span><span class="hl-6">BROTLI_MIN_LEVEL</span><span class="hl-1">, </span><span class="hl-5">typeof</span><span class="hl-1"> </span><span class="hl-6">BROTLI_MAX_LEVEL</span><span class="hl-1">&gt;</span><br/><span class="hl-5">type</span><span class="hl-1"> </span><span class="hl-7">ZlibLevel</span><span class="hl-1"> = </span><span class="hl-7">IntClosedRange</span><span class="hl-1">&lt;</span><span class="hl-5">typeof</span><span class="hl-1"> </span><span class="hl-6">ZLIB_MIN_LEVEL</span><span class="hl-1">, </span><span class="hl-5">typeof</span><span class="hl-1"> </span><span class="hl-6">ZLIB_MAX_LEVEL</span><span class="hl-1">&gt;</span><br/><br/><span class="hl-5">type</span><span class="hl-1"> </span><span class="hl-7">ZstdOptions</span><span class="hl-1"> = </span><span class="hl-7">BunZstdOptions</span><span class="hl-1"> | </span><span class="hl-7">NodeZstdOptions</span><br/><span class="hl-5">type</span><span class="hl-1"> </span><span class="hl-7">BrotliOptions</span><span class="hl-1"> = </span><span class="hl-7">NodeBrotliOptions</span><br/><span class="hl-5">type</span><span class="hl-1"> </span><span class="hl-7">ZlibOptions</span><span class="hl-1"> = </span><span class="hl-7">BunZlibOptions</span><span class="hl-1"> | </span><span class="hl-7">NodeZlibOptions</span><br/><br/><span class="hl-5">type</span><span class="hl-1"> </span><span class="hl-7">CompressionEncoding</span><span class="hl-1"> = (</span><span class="hl-5">typeof</span><span class="hl-1"> </span><span class="hl-6">ACCEPTED_ENCODINGS</span><span class="hl-1">)[</span><span class="hl-7">number</span><span class="hl-1">]</span><br/><span class="hl-5">type</span><span class="hl-1"> </span><span class="hl-7">CompressionCallback</span><span class="hl-1"> = (</span><span class="hl-4">c</span><span class="hl-1">: </span><span class="hl-7">Context</span><span class="hl-1">) </span><span class="hl-5">=&gt;</span><span class="hl-1"> </span><span class="hl-7">boolean</span><br/><br/><span class="hl-5">interface</span><span class="hl-1"> </span><span class="hl-7">HonoCompressOptions</span><span class="hl-1"> {</span><br/><span class="hl-1">  </span><span class="hl-4">encoding</span><span class="hl-1">?: </span><span class="hl-7">CompressionEncoding</span><br/><span class="hl-1">  </span><span class="hl-4">encodings</span><span class="hl-1">?: </span><span class="hl-7">CompressionEncoding</span><span class="hl-1">[]</span><br/><span class="hl-1">  </span><span class="hl-4">fallback</span><span class="hl-1">?: </span><span class="hl-7">CompressionEncoding</span><br/><span class="hl-1">  </span><span class="hl-4">force</span><span class="hl-1">?: </span><span class="hl-7">boolean</span><br/><span class="hl-1">  </span><span class="hl-4">strict</span><span class="hl-1">?: </span><span class="hl-7">boolean</span><br/><span class="hl-1">  </span><span class="hl-4">streaming</span><span class="hl-1">?: </span><span class="hl-7">boolean</span><br/><span class="hl-1">  </span><span class="hl-4">bun</span><span class="hl-1">?: </span><span class="hl-7">boolean</span><br/><span class="hl-1">  </span><span class="hl-4">node</span><span class="hl-1">?: </span><span class="hl-7">boolean</span><br/><span class="hl-1">  </span><span class="hl-4">threshold</span><span class="hl-1">?: </span><span class="hl-7">number</span><br/><span class="hl-1">  </span><span class="hl-4">zstdLevel</span><span class="hl-1">?: </span><span class="hl-7">ZstdLevel</span><br/><span class="hl-1">  </span><span class="hl-4">zstdOptions</span><span class="hl-1">?: </span><span class="hl-7">ZstdOptions</span><br/><span class="hl-1">  </span><span class="hl-4">brotliLevel</span><span class="hl-1">?: </span><span class="hl-7">BrotliLevel</span><br/><span class="hl-1">  </span><span class="hl-4">brotliOptions</span><span class="hl-1">?: </span><span class="hl-7">BrotliOptions</span><br/><span class="hl-1">  </span><span class="hl-4">gzipLevel</span><span class="hl-1">?: </span><span class="hl-7">ZlibLevel</span><br/><span class="hl-1">  </span><span class="hl-4">gzipOptions</span><span class="hl-1">?: </span><span class="hl-7">ZlibOptions</span><br/><span class="hl-1">  </span><span class="hl-4">deflateLevel</span><span class="hl-1">?: </span><span class="hl-7">ZlibLevel</span><br/><span class="hl-1">  </span><span class="hl-4">deflateOptions</span><span class="hl-1">?: </span><span class="hl-7">ZlibOptions</span><br/><span class="hl-1">  </span><span class="hl-4">filter</span><span class="hl-1">?: </span><span class="hl-7">CompressionCallback</span><br/><span class="hl-1">}</span>
-</code><button type="button">Copy</button></pre>
         </div>
       </div>
       <div class="col-sidebar">
@@ -1072,21 +1050,6 @@
                         <a href="#example"><span>Example</span></a>
                       </li>
                     </ul>
-                  </li>
-                </ul>
-              </li>
-              <li>
-                <a href="#api-reference"
-                  ><span>API <wbr />Reference</span></a
-                >
-              </li>
-              <li>
-                <ul>
-                  <li>
-                    <a href="#constants"><span>Constants</span></a>
-                  </li>
-                  <li>
-                    <a href="#types"><span>Types</span></a>
                   </li>
                 </ul>
               </li>
