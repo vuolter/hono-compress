@@ -21,7 +21,7 @@
     "resolveJsonModule": true,
 
     // Emit
-    "declarationMap": true,
+    "declarationMap": false,
     "noEmit": true,
     "removeComments": true,
 

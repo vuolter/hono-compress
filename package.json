@@ -28,24 +28,24 @@
     "deflate"
   ],
   "exports": {
-    "import": {
-      "types": "./dist/index.d.mts",
-      "default": "./dist/index.mjs"
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
     },
-    "require": {
-      "types": "./dist/index.d.cts",
-      "default": "./dist/index.cjs"
-    }
+    "./package.json": "./package.json"
   },
   "main": "./dist/index.cjs",
-  "module": "./dist/index.mjs",
+  "module": "./dist/index.js",
   "types": "./dist/index.d.cts",
   "files": [
     "dist"
   ],
+  "engines": {
+    "node": ">=18"
+  },
   "url": "https://github.com/vuolter/hono-compress",
   "scripts": {
-    "build": "bun typecheck && pkgroll --clean-dist --minify",
+    "build": "bun typecheck && tsdown",
     "format": "prettier . --cache --experimental-cli --write",
     "lint": "eslint --cache --cache-location ./node_modules/.cache/eslint --cache-strategy content --concurrency auto --fix .",
     "typecheck": "tsgo",
@@ -73,8 +73,8 @@
     "eslint-plugin-tsdoc": "^0.5.0",
     "eslint-plugin-unicorn": "^62.0.0",
     "globals": "^16.5.0",
-    "pkgroll": "^2.20.1",
     "prettier": "^3.6.2",
+    "tsdown": "^0.16.6",
     "typedoc": "^0.28.14",
     "typedoc-plugin-markdown": "^4.9.0",
     "typedoc-theme-fresh": "^0.2.1",
