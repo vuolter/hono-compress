@@ -33,10 +33,7 @@ export default defineConfig([
     languageOptions: {
       globals: globals.builtin,
       parser: tseslint.parser,
-      parserOptions: {
-        projectService: { allowDefaultProject: ['tests/index.test.ts'] },
-        tsconfigRootDir: import.meta.dirname,
-      },
+      parserOptions: { projectService: true, tsconfigRootDir: import.meta.dirname },
     },
     rules: {
       '@typescript-eslint/no-explicit-any': 'off',
