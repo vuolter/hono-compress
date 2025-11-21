@@ -1,4 +1,3 @@
-// https://developers.cloudflare.com/workers/runtime-apis/web-standards/#navigatoruseragent
 export const CLOUDFLARE_WORKERS_NAVIGATOR = 'Cloudflare-Workers'
 export { COMPRESSIBLE_CONTENT_TYPE_REGEX } from 'hono/utils/compress'
 
@@ -7,8 +6,9 @@ export const BUN_ENCODINGS = ['zstd', 'gzip', 'deflate'] as const
 export const ZLIB_ENCODINGS = ['zstd', 'br', 'gzip', 'deflate', 'deflate-raw'] as const
 export const WEB_ENCODINGS = ['gzip', 'deflate', 'deflate-raw'] as const
 
-export const CACHECONTROL_NOTRANSFORM_REGEX = /(?:^|,)\s*no-transform\s*(?:,|$)/i
-export const TRANSFERENCODING_NOCOMPRESS_REGEX =
+export const CACHECONTROL_NOTRANSFORM_REGEX: RegExp =
+  /(?:^|,)\s*no-transform\s*(?:,|$)/i
+export const TRANSFERENCODING_NOCOMPRESS_REGEX: RegExp =
   /(?:^|,)\s*(compress|gzip|deflate)\s*(?:,|$)/i
 
 export const THRESHOLD_SIZE = 1024
