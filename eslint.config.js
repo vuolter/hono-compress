@@ -14,7 +14,7 @@ import tseslint from 'typescript-eslint'
 import globals from 'globals'
 
 export default defineConfig([
-  globalIgnores(['docs']),
+  globalIgnores(['dist', 'docs']),
   {
     files: ['**/*.{ts,tsx}'],
     plugins: { tsdoc },
