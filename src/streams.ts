@@ -29,13 +29,14 @@ abstract class BaseCompressionStream
     this.options = options
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  static canHandle(encoding: CompressionEncoding): boolean {
+  static canHandle(_encoding: CompressionEncoding): boolean {
     throw new Error('Method not implemented')
   }
 }
 
 export class BunCompressionStream extends BaseCompressionStream {
+  static readonly acceptedEncoding: ReadonlySet<string> = new Set(BUN_ENCODINGS)
+
   static readonly compressor = new Map([
     ['deflate', bun?.deflateSync],
     ['gzip', bun?.gzipSync],
@@ -58,13 +59,15 @@ export class BunCompressionStream extends BaseCompressionStream {
   static override canHandle(encoding: CompressionEncoding): boolean {
     return (
       isBunRuntime &&
-      (BUN_ENCODINGS as ReadonlyArray<string>).includes(encoding) &&
+      BunCompressionStream.acceptedEncoding.has(encoding) &&
       BunCompressionStream.compressor.get(encoding) !== undefined
     )
   }
 }
 
 export class NodeCompressionStream extends BaseCompressionStream {
+  static readonly acceptedEncoding: ReadonlySet<string> = new Set(ZLIB_ENCODINGS)
+
   override readable: ReadableStream
   override writable: WritableStream
 
@@ -130,13 +133,13 @@ export class NodeCompressionStream extends BaseCompressionStream {
   }
 
   static override canHandle(encoding: CompressionEncoding): boolean {
-    return (
-      zlib != undefined && (ZLIB_ENCODINGS as ReadonlyArray<string>).includes(encoding)
-    )
+    return zlib != undefined && NodeCompressionStream.acceptedEncoding.has(encoding)
   }
 }
 
 export class WebCompressionStream extends BaseCompressionStream {
+  static readonly acceptedEncoding: ReadonlySet<string> = new Set(WEB_ENCODINGS)
+
   override readable: ReadableStream
   override writable: WritableStream
 
@@ -150,6 +153,6 @@ export class WebCompressionStream extends BaseCompressionStream {
   }
 
   static override canHandle(encoding: CompressionEncoding): boolean {
-    return (WEB_ENCODINGS as ReadonlyArray<string>).includes(encoding)
+    return WebCompressionStream.acceptedEncoding.has(encoding)
   }
 }
