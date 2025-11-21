@@ -4,7 +4,7 @@ Compression plugin for [Hono](https://github.com/honojs/hono)
 
 Drop-in replacement of the built-in [Compress Middleware](https://hono.dev/docs/middleware/builtin/compress), but with extra juice! 🍋
 
-## Features
+### Features
 
 - 💯 compress content with `zstd`, `brotli`, `gzip`, `deflate`
 - ✨ ultra-fast and 100% type-safe
@@ -17,11 +17,17 @@ Drop-in replacement of the built-in [Compress Middleware](https://hono.dev/docs/
 - 🔥 [fully documented and tested](https://github.com/vuolter/hono-compress/wiki)
 - ☕ works flawlessy on [Node](https://nodejs.org/), [Deno](https://deno.com/), [Cloudflare Workers](https://workers.cloudflare.com/), [Deno Deploy](https://deno.com/deploy) and many edge runtimes
 
-## About
+### Caching
+
+**hono-compress** does not cache content responses/requests, as this is outside its scope.
+
+You can rely on [hono-server-cache](https://www.npmjs.com/package/hono-server-cache) (or other middlewares) to handle caching.
+
+### Credits
 
 This project born as a fork of [bun-compression](https://github.com/sunneydev/bun-compression), which itself is a fork of [elysia-compression](https://github.com/gusb3ll/elysia-compression).
 
-Both projects were broken, unmaintained and missing many of the features I was looking for, so I started with them, but ended up rewriting everything from scratch.
+Both projects were broken, unmaintained and missing many of the features I was looking for, so I started with them, but ended up rewriting everything from scratch...
 
 This project has been also inspired by [hono/compress](https://github.com/honojs/hono), [expressjs/compression](https://github.com/expressjs/compression) and [elysia-compress](https://github.com/vermaysha/elysia-compress).
 
@@ -267,4 +273,32 @@ import type { Context } from 'hono'
 compress({
   filter: (c: Context) => true,
 })
+```
+
+## Development
+
+Install dependencies:
+
+```bash
+bun install
+```
+
+Build dist files:
+
+```bash
+bun run build
+```
+
+## Testing & Documentation
+
+Run test suite:
+
+```bash
+bun test
+```
+
+Generate documentation files:
+
+```bash
+bun gendocs
 ```
