@@ -37,14 +37,14 @@ import {
   WebCompressionStream,
 } from '~/streams'
 
-function checkEncodings(encodings: CompressionEncoding[]) {
-  const unsupportedEncoding: string | undefined = encodings.find(
-    (enc) => !ACCEPTED_ENCODINGS.includes(enc),
-  )
-  if (unsupportedEncoding) {
-    throw new TypeError(`Invalid compression encoding: ${unsupportedEncoding}`)
-  }
-}
+// function checkEncodings(encodings: CompressionEncoding[]) {
+//   const unsupportedEncoding: string | undefined = encodings.find(
+//     (enc) => !ACCEPTED_ENCODINGS.includes(enc),
+//   )
+//   if (unsupportedEncoding) {
+//     throw new TypeError(`Invalid compression encoding: ${unsupportedEncoding}`)
+//   }
+// }
 
 function checkRuntime() {
   // NOTE: skip runtime already compressing by default
@@ -213,7 +213,8 @@ export function compress({
     encodings = [encoding]
   }
 
-  checkEncodings(encodings)
+  // NOTE: avoid checking if encodings allowed since already type locked
+  // checkEncodings(encodings)
 
   const rules = { filter, threshold, force, strict, streaming, bun, node }
   const config: Map<string, CompressionConfig> = new Map([
