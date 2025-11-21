@@ -14,7 +14,7 @@ Drop-in replacement of the built-in [Compress Middleware](https://hono.dev/docs/
 - 🎯 customizable compression level and options
 - 🎱 content size threshold and custom filtering
 - 🔒 double-compression protection
-- 🔥 fully documented and tested
+- 🔥 [fully documented and tested](https://github.com/vuolter/hono-compress/wiki)
 - ☕ works flawlessy on [Node](https://nodejs.org/), [Deno](https://deno.com/), [Cloudflare Workers](https://workers.cloudflare.com/), [Deno Deploy](https://deno.com/deploy) and many edge runtimes
 
 ## About
