@@ -19,7 +19,7 @@ Drop-in replacement of the built-in [Compress Middleware](https://hono.dev/docs/
 
 ### Caching
 
-**hono-compress** does not cache content responses/requests, as this is outside its scope.
+**hono-compress** does not cache content response/request, as this is outside its scope.
 
 You can rely on [hono-server-cache](https://www.npmjs.com/package/hono-server-cache) (or other middlewares) to handle caching.
 
