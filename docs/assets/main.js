@@ -308,7 +308,6 @@ window.translations = {
               s = Math.floor(i / 2),
               o = this.elements[s * 2];
             i > 1 && (o < e && (n = s), o > e && (r = s), o != e);
-
           )
             ((i = r - n), (s = n + Math.floor(i / 2)), (o = this.elements[s * 2]))
           if (o == e || o > e) return s * 2
@@ -346,7 +345,6 @@ window.translations = {
               l = 0,
               d = 0;
             l < s && d < o;
-
           )
             ((a = r[l]),
               (c = i[d]),
@@ -664,7 +662,6 @@ window.translations = {
           for (
             var r = new t.TokenSet(), i = [{ node: r, editsRemaining: n, str: e }];
             i.length;
-
           ) {
             var s = i.pop()
             if (s.str.length > 0) {
@@ -775,7 +772,6 @@ window.translations = {
               r = void 0,
               i = [{ qNode: e, output: n, node: this }];
             i.length;
-
           ) {
             r = i.pop()
             for (
