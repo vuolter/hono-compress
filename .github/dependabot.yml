@@ -1,14 +1,35 @@
 version: 2
 
 updates:
-  - package-ecosystem: github-actions
-    directory: /
+  - package-ecosystem: 'github-actions'
+    directory: '/'
     schedule:
-      interval: monthly
+      interval: 'monthly'
+    labels:
+      - 'dependencies'
+      - 'ci'
     open-pull-requests-limit: 10
+    ignore:
+      - dependency-name: '*'
+        update-types:
+          - 'version-update:semver-minor'
+          - 'version-update:semver-patch'
 
-  - package-ecosystem: npm
-    directory: /
+  - package-ecosystem: 'npm'
+    directory: /""
     schedule:
-      interval: weekly
+      interval: 'weekly'
+    labels:
+      - 'dependencies'
+      - 'typescript'
     open-pull-requests-limit: 10
+    groups:
+      typescript:
+        patterns:
+          - '@types/*'
+    allow:
+      - dependency-type: 'production'
+    ignore:
+      - dependency-name: '*'
+        update-types:
+          - 'version-update:semver-patch'
