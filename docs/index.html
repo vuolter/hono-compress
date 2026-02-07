@@ -503,12 +503,12 @@
               >Compress Middleware</a
             >, but with extra juice! 🍋
           </p>
-          <h2 id="features" class="tsd-anchor-link">
+          <h3 id="features" class="tsd-anchor-link">
             Features<a href="#features" aria-label="Permalink" class="tsd-anchor-icon"
               ><svg viewBox="0 0 24 24" aria-hidden="true">
                 <use href="assets/icons.svg#icon-anchor"></use></svg
             ></a>
-          </h2>
+          </h3>
           <ul>
             <li>
               💯 compress content with <code>zstd</code>, <code>brotli</code>,
@@ -534,12 +534,29 @@
               <a href="https://deno.com/deploy">Deno Deploy</a> and many edge runtimes
             </li>
           </ul>
-          <h2 id="about" class="tsd-anchor-link">
-            About<a href="#about" aria-label="Permalink" class="tsd-anchor-icon"
+          <h3 id="caching" class="tsd-anchor-link">
+            Caching<a href="#caching" aria-label="Permalink" class="tsd-anchor-icon"
               ><svg viewBox="0 0 24 24" aria-hidden="true">
                 <use href="assets/icons.svg#icon-anchor"></use></svg
             ></a>
-          </h2>
+          </h3>
+          <p>
+            <strong>hono-compress</strong> does not cache content response/request, as
+            this is outside its scope.
+          </p>
+          <p>
+            You can rely on
+            <a href="https://www.npmjs.com/package/hono-server-cache"
+              >hono-server-cache</a
+            >
+            (or other middlewares) to handle caching.
+          </p>
+          <h3 id="credits" class="tsd-anchor-link">
+            Credits<a href="#credits" aria-label="Permalink" class="tsd-anchor-icon"
+              ><svg viewBox="0 0 24 24" aria-hidden="true">
+                <use href="assets/icons.svg#icon-anchor"></use></svg
+            ></a>
+          </h3>
           <p>
             This project born as a fork of
             <a href="https://github.com/sunneydev/bun-compression">bun-compression</a>,
@@ -551,7 +568,7 @@
           <p>
             Both projects were broken, unmaintained and missing many of the features I
             was looking for, so I started with them, but ended up rewriting everything
-            from scratch.
+            from scratch...
           </p>
           <p>
             This project has been also inspired by
@@ -920,6 +937,40 @@
           <p>Force the response content to be always compressed:</p>
           <pre><code class="typescript"><span class="hl-3">import</span><span class="hl-1"> </span><span class="hl-3">type</span><span class="hl-1"> { </span><span class="hl-4">Context</span><span class="hl-1"> } </span><span class="hl-3">from</span><span class="hl-1"> </span><span class="hl-2">&#39;hono&#39;</span><br/><br/><span class="hl-0">compress</span><span class="hl-1">({</span><br/><span class="hl-1">  </span><span class="hl-0">filter</span><span class="hl-4">:</span><span class="hl-1"> (</span><span class="hl-4">c</span><span class="hl-1">: </span><span class="hl-7">Context</span><span class="hl-1">) </span><span class="hl-5">=&gt;</span><span class="hl-1"> </span><span class="hl-5">true</span><span class="hl-1">,</span><br/><span class="hl-1">})</span>
 </code><button type="button">Copy</button></pre>
+
+          <h2 id="development" class="tsd-anchor-link">
+            Development<a
+              href="#development"
+              aria-label="Permalink"
+              class="tsd-anchor-icon"
+              ><svg viewBox="0 0 24 24" aria-hidden="true">
+                <use href="assets/icons.svg#icon-anchor"></use></svg
+            ></a>
+          </h2>
+          <p>Install dependencies:</p>
+          <pre><code class="bash"><span class="hl-0">bun</span><span class="hl-1"> </span><span class="hl-2">install</span>
+</code><button type="button">Copy</button></pre>
+
+          <p>Build dist files:</p>
+          <pre><code class="bash"><span class="hl-0">bun</span><span class="hl-1"> </span><span class="hl-2">run</span><span class="hl-1"> </span><span class="hl-2">build</span>
+</code><button type="button">Copy</button></pre>
+
+          <h2 id="testing-documentation" class="tsd-anchor-link">
+            Testing &amp; Documentation<a
+              href="#testing-documentation"
+              aria-label="Permalink"
+              class="tsd-anchor-icon"
+              ><svg viewBox="0 0 24 24" aria-hidden="true">
+                <use href="assets/icons.svg#icon-anchor"></use></svg
+            ></a>
+          </h2>
+          <p>Run test suite:</p>
+          <pre><code class="bash"><span class="hl-0">bun</span><span class="hl-1"> </span><span class="hl-2">test</span>
+</code><button type="button">Copy</button></pre>
+
+          <p>Generate documentation files:</p>
+          <pre><code class="bash"><span class="hl-0">bun</span><span class="hl-1"> </span><span class="hl-2">gendocs</span>
+</code><button type="button">Copy</button></pre>
         </div>
       </div>
       <div class="col-sidebar">
@@ -930,10 +981,17 @@
             >
             <ul>
               <li>
-                <a href="#features"><span>Features</span></a>
-              </li>
-              <li>
-                <a href="#about"><span>About</span></a>
+                <ul>
+                  <li>
+                    <a href="#features"><span>Features</span></a>
+                  </li>
+                  <li>
+                    <a href="#caching"><span>Caching</span></a>
+                  </li>
+                  <li>
+                    <a href="#credits"><span>Credits</span></a>
+                  </li>
+                </ul>
               </li>
               <li>
                 <a href="#installation"><span>Installation</span></a>
@@ -1052,6 +1110,14 @@
                     </ul>
                   </li>
                 </ul>
+              </li>
+              <li>
+                <a href="#development"><span>Development</span></a>
+              </li>
+              <li>
+                <a href="#testing-documentation"
+                  ><span>Testing &amp; <wbr />Documentation</span></a
+                >
               </li>
             </ul>
           </div>
