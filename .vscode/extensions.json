@@ -2,9 +2,9 @@
   "recommendations": [
     "dbaeumer.vscode-eslint",
     "editorconfig.editorconfig",
+    "esbenp.prettier-vscode",
     "ms-vscode.vscode-typescript-next",
     "oven.bun-vscode",
-    "prettier.prettier-vscode",
     "yoavbls.pretty-ts-errors"
   ]
 }
