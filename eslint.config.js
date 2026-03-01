@@ -1,11 +1,11 @@
 import js from '@eslint/js'
-import prettier from 'eslint-config-prettier'
+import prettier from 'eslint-config-prettier/flat'
 import { createTypeScriptImportResolver } from 'eslint-import-resolver-typescript'
 import { importX } from 'eslint-plugin-import-x'
 // import markdown from 'eslint-plugin-markdown'
 import perfectionist from 'eslint-plugin-perfectionist'
 import regexp from 'eslint-plugin-regexp'
-// import security from 'eslint-plugin-security'
+import security from 'eslint-plugin-security'
 import sonarjs from 'eslint-plugin-sonarjs'
 // import tsdoc from 'eslint-plugin-tsdoc'
 import unicorn from 'eslint-plugin-unicorn'
@@ -22,11 +22,11 @@ export default defineConfig([
       js.configs.recommended,
       tseslint.configs.recommended,
       unicorn.configs.recommended,
-      regexp.configs['flat/recommended'],
+      regexp.configs.recommended,
       importX.flatConfigs.recommended,
       importX.flatConfigs.typescript,
       perfectionist.configs['recommended-natural'],
-      // security.configs.recommended,
+      security.configs.recommended,
       sonarjs.configs.recommended,
       prettier,
     ],
