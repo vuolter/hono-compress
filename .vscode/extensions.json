@@ -5,6 +5,7 @@
     "esbenp.prettier-vscode",
     "ms-vscode.vscode-typescript-next",
     "oven.bun-vscode",
+    "tamasfe.even-better-toml",
     "yoavbls.pretty-ts-errors"
   ]
 }
