@@ -2,12 +2,11 @@ import js from '@eslint/js'
 import prettier from 'eslint-config-prettier/flat'
 import { createTypeScriptImportResolver } from 'eslint-import-resolver-typescript'
 import { importX } from 'eslint-plugin-import-x'
-// import markdown from 'eslint-plugin-markdown'
 import perfectionist from 'eslint-plugin-perfectionist'
 import regexp from 'eslint-plugin-regexp'
 import security from 'eslint-plugin-security'
 import sonarjs from 'eslint-plugin-sonarjs'
-// import tsdoc from 'eslint-plugin-tsdoc'
+import tsdoc from 'eslint-plugin-tsdoc'
 import unicorn from 'eslint-plugin-unicorn'
 import { defineConfig, globalIgnores } from 'eslint/config'
 import tseslint from 'typescript-eslint'
@@ -17,7 +16,7 @@ export default defineConfig([
   globalIgnores(['dist', 'docs']),
   {
     files: ['**/*.{ts,tsx}'],
-    // plugins: { tsdoc },
+    plugins: { tsdoc },
     extends: [
       js.configs.recommended,
       tseslint.configs.recommended,
@@ -50,7 +49,7 @@ export default defineConfig([
       'perfectionist/sort-objects': 'off',
       'sonarjs/cognitive-complexity': 'warn',
       'sonarjs/no-nested-conditional': 'warn',
-      // 'tsdoc/syntax': 'warn',
+      'tsdoc/syntax': 'warn',
       'unicorn/consistent-function-scoping': 'off',
       'unicorn/filename-case': 'off',
       'unicorn/no-array-callback-reference': 'off',
@@ -65,8 +64,4 @@ export default defineConfig([
       ],
     },
   },
-  // {
-  //   files: ['**/*.md'],
-  //   extends: [markdown.configs.recommended],
-  // }
 ])
